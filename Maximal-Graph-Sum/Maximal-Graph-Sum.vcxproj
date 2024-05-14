@@ -106,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -135,9 +136,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="graph.h" />
+    <ClInclude Include="import-graph.h" />
+    <ClInclude Include="search.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graph.c" />
+    <ClCompile Include="import-graph.c" />
+    <ClCompile Include="search.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

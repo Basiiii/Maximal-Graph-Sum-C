@@ -1,7 +1,7 @@
 /**
 
     @file      main.c
-    @brief     
+    @brief
     @details   ~
     @author    Enrique George Rodrigues
     @date      29.04.2024
@@ -9,8 +9,18 @@
 
 **/
 #include <stdio.h>
+
 #include "graph.h"
+#include "import-graph.h"
+#include "search.h"
 
 int main() {
-    return 0;
+  // Create a new graph
+  Graph* graph = CreateGraph();
+
+  ImportGraphLine(graph, "file.csv");
+
+  DisplayGraph(graph);
+
+  return 0;
 }
