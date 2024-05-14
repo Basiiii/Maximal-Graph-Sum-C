@@ -16,6 +16,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define MIN_LOAD_FACTOR 0.1
+#define MAX_LOAD_FACTOR 0.5
+
+#define DEFAULT_HASH_SIZE 100
+
 typedef struct Edge {
   int dest;           // Destination vertex
   int weight;         // Weight of the edge
@@ -23,49 +28,50 @@ typedef struct Edge {
 } Edge;
 
 typedef struct Vertex {
-  int vertex;           // Vertex index
-  Edge* edges;          // List of adjacent vertices
-  struct Vertex* next;  // Pointer to the next vertex in the list
+  int vertex;   // Vertex index
+  Edge* edges;  // List of adjacent vertices
 } Vertex;
 
 typedef struct Graph {
   int numVertices;
-  Vertex* vertices;  // Linked list of vertices
+  int hashSize;
+  Vertex** vertices;  // Hash table of vertices
 } Graph;
 
-Graph* CreateGraph();
+// Hash function
+int Hash(int vertexIndex, int hashSize);
 
-// misc helper funcs
-Vertex* FindVertex(Graph* graph, int vertex);
-Edge* FindEdge(Vertex* vertex, int dest);
-bool VertexExists(Graph* graph, int vertex);
-bool VertexExists(Graph* graph, int vertex);
-void AddVertexIfNotExists(Graph* graph, int vertexIndex);
-void AddEdgeIfNotExists(Graph* graph, int num1, int num2, int weight);
-Vertex* FindSourceVertex(Graph* graph, int src);
+// Function to create a new graph
+Graph* CreateGraph(int numVertices, int hashSize);
 
-// Create Add Vertices (nodes)
-Vertex* CreateVertex(int vertex);
-void AddVertexToGraph(Graph* graph, Vertex* newVertex);
-void AddVertex(Graph* graph, int vertex);
-
-// Create Add Edges
+// Function to create a new edge
 Edge* CreateEdge(int dest, int weight);
-void AddEdgeToSourceVertex(Vertex* sourceVertex, Edge* newEdge);
-void AddEdge(Graph* graph, int src, int dest, int weight);
 
-// Remove Edges
-void RemoveEdge(Graph* graph, int src, int dest);
-void RemoveEdgeFromVertex(Vertex* vertex, int dest);
-void RemoveEdgesToVertex(Graph* graph, int destVertex);
+// Function to add an edge to a vertex
+void AddEdge(Vertex* vertex, int dest, int weight);
 
-// Remove Vertex (node)
-void RemoveVertex(Graph* graph, int vertexToRemove);
+// Function to check if an edge already exists between two vertices
+bool EdgeExists(Vertex* vertex, int dest);
 
-// Display
-void DisplayGraph(Graph* graph);
+// Function to check if a vertex already exists in the hash table
+bool VertexExists(Graph* graph, int vertexIndex);
 
-// Free
-void FreeGraph(Graph* graph);
+// Function to create a new vertex
+Vertex* CreateVertex(int vertexIndex);
+
+// Function to add a vertex to the graph
+void AddVertex(Graph* graph, int vertexIndex);
+
+void DisplayGraph(const Graph* graph);
+
+bool EdgeExistsBetweenVertices(const Graph* graph, int src, int dest);
+
+Vertex* FindVertex(const Graph* graph, int vertexIndex);
+
+void RemoveEdge(Vertex* vertex, int dest);
+
+void RemoveVertex(Graph* graph, int vertexIndex);
+
+void DeleteGraph(Graph* graph);
 
 #endif  // !GRAPH_H

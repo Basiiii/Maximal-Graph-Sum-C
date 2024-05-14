@@ -114,7 +114,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\</Command>
+      <Command>if exist $(ProjectDir)..\Example-Use\Maximal-Graph-Sum.lib del $(ProjectDir)..\Example-Use\Maximal-Graph-Sum.lib
+xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
