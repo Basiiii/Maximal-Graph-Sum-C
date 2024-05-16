@@ -8,55 +8,53 @@
     @copyright © Enrique George Rodrigues, 2024. All right reserved.
 
 **/
+#include <Windows.h>
 #include <stdio.h>
+#include <time.h>
 
+#include "edges.h"
 #include "graph.h"
+#include "vertices.h"
+
+#pragma comment(lib, "Maximal-Graph-Sum.lib")
 
 int main() {
-  // Create a graph with 5 vertices
-  int numVertices = 5;
-  Graph* graph = CreateGraph(numVertices, DEFAULT_HASH_SIZE);
-  if (graph == NULL) {
-    fprintf(stderr, "Failed to create graph\n");
-    return EXIT_FAILURE;
+  clock_t start;
+  clock_t end;
+  double cpu_time_used;
+
+  Sleep(200);
+
+  // Start the clock
+  start = clock();
+
+  Graph* graph = CreateGraph(15, 60);
+
+  for (int i = 0; i < 15; i++) {
+    CreateAddVertex(graph, i);
   }
 
-  // Add vertices to the graph
-  for (int i = 0; i < numVertices; i++) {
-    AddVertex(graph, i);
-  }
+  // for (int i = 0; i < 2000000; i++) {
+  //   if (i < 3) {
+  //     CreateAddEdge(FindVertex(graph, i), 2, 5);
+  //   }
+  //   else {
+  //     CreateAddEdge(FindVertex(graph, i - 2), i, 5);
+  //   }
+  // }
+
+  // End the clock
+  end = clock();
+
+  // Calculate the CPU time used
+  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
   DisplayGraph(graph);
 
-  printf("\nAdding edges:\n");
-  AddEdge(graph->vertices[0], 1,
-          10);  // Edge from vertex 0 to vertex 1 with weight 10
-  AddEdge(graph->vertices[0], 2,
-          20);  // Edge from vertex 0 to vertex 2 with weight 20
-  AddEdge(graph->vertices[1], 3,
-          30);  // Edge from vertex 1 to vertex 3 with weight 30
-  AddEdge(graph->vertices[2], 3,
-          40);  // Edge from vertex 2 to vertex 3 with weight 40
-  AddEdge(graph->vertices[3], 4,
-          50);  // Edge from vertex 3 to vertex 4 with weight 50
-  DisplayGraph(graph);
-  printf("\n\n");
+  FreeGraph(graph);
 
-  printf("Removing edges\n");
-
-  RemoveEdge(FindVertex(graph, 0), 1);
-  RemoveEdge(FindVertex(graph, 0), 2);
-  DisplayGraph(graph);
-  printf("\n\n");
-
-  printf("Removing vertex\n");
-
-  RemoveVertex(graph, 2);
-  graph->numVertices = 4;
-  DisplayGraph(graph);
-  printf("\n\n");
-
-  DeleteGraph(graph);
+  // Print the CPU time used
+  printf("\n\nCPU time used: %f seconds\n", cpu_time_used);
 
   return 0;
 }

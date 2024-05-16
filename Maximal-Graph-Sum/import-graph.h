@@ -12,8 +12,8 @@
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
 #include "graph.h"
-
-void ImportGraph(Graph* graph, const char* filename);
-void ImportGraphLine(Graph* graph, const char* filename);
+ //
+ // void ImportGraph(Graph* graph, const char* filename);
+ // void ImportGraphLine(Graph* graph, const char* filename);
 
 #endif  // !IMPORT_GRAPH_H

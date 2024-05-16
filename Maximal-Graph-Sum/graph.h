@@ -13,49 +13,60 @@
 
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
-#include <stdbool.h>
-#include <stdlib.h>
+#include "graph-error-codes.h"
 
-#define MIN_LOAD_FACTOR 0.1
-#define MAX_LOAD_FACTOR 0.5
-
-#define DEFAULT_HASH_SIZE 100
-
+/**
+    @struct Edge
+    @brief  Structure of an edge in the graph which contains a destination
+            vertex, weight and pointer to the next edge in the linked list.
+**/
 typedef struct Edge {
-  int dest;           // Destination vertex
-  int weight;         // Weight of the edge
-  struct Edge* next;  // Pointer to the next edge in the list
+  unsigned int dest;    // Destination vertex
+  unsigned int weight;  // Weight of the edge
+  struct Edge* next;    // Pointer to the next edge in the list
 } Edge;
 
+/**
+    @struct Vertex
+    @brief  Structure of a vertex of a graph which contains an identification
+            number and a linked list of all edges.
+**/
 typedef struct Vertex {
-  int id;       // Vertex id
-  Edge* edges;  // List of adjacent vertices
+  unsigned int id;  // Vertex id (identification)
+  Edge* edges;      // Start of linked list of adjacent vertices
 } Vertex;
 
+/**
+    @struct Graph
+    @brief  Structure of a graph built with a hash table for vertices and linked
+            lists for edges.
+**/
 typedef struct Graph {
-  int numVertices;
-  int hashSize;
-  Vertex** vertices;  // Hash table of vertices
+  unsigned int numVertices;  // Current number of vertices of the graph
+  unsigned int hashSize;     // Current size of hash table
+  Vertex** vertices;         // Hash table of vertices
 } Graph;
 
-// Function to create a new graph
-Graph* CreateGraph(int numVertices, int hashSize);
+/**
+ *  @brief  Creates a new graph with the specified number of vertices and hash
+ *          table size.
+ *  @param  numVertices - The initial number of vertices in the graph.
+ *  @param  hashSize    - The size of the hash table used to store vertices.
+ *  @retval             - A pointer to the newly created graph.
+ *  @retval             - NULL if memory allocation fails.
+ */
+Graph* CreateGraph(unsigned int numVertices, unsigned int hashSize);
 
-// Function to create a new edge
-Edge* CreateEdge(int dest, int weight);
-
-// Function to add an edge to a vertex
-void AddEdge(Vertex* vertex, int dest, int weight);
-
-// Function to check if an edge already exists between two vertices
-bool EdgeExists(Vertex* vertex, int dest);
-
+/**
+    @brief Displays the graph in a text format to stdout.
+    @param graph - The graph to be displayed.
+**/
 void DisplayGraph(const Graph* graph);
 
-bool EdgeExistsBetweenVertices(const Graph* graph, int src, int dest);
-
-void RemoveEdge(Vertex* vertex, int dest);
-
-void DeleteGraph(Graph* graph);
+/**
+    @brief Frees a given graph from memory.
+    @param graph - The graph to be freed.
+**/
+void FreeGraph(Graph* graph);
 
 #endif  // !GRAPH_H
