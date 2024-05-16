@@ -16,27 +16,45 @@
     <Filter Include="Source Files\Import">
       <UniqueIdentifier>{b52731c2-2060-4481-827e-e538ee5370e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graph">
+      <UniqueIdentifier>{1b7ae2c0-3048-4583-a964-b385a9c33253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph">
+      <UniqueIdentifier>{eb57e0db-7314-434a-b462-d9b845ab2e6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="import-graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="graph.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="edges.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="vertices.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graph.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="import-graph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="search.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graph.c">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="vertices.c">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="edges.c">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

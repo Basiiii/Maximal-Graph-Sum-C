@@ -137,14 +137,18 @@ xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="edges.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="import-graph.h" />
     <ClInclude Include="search.h" />
+    <ClInclude Include="vertices.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="edges.c" />
     <ClCompile Include="graph.c" />
     <ClCompile Include="import-graph.c" />
     <ClCompile Include="search.c" />
+    <ClCompile Include="vertices.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

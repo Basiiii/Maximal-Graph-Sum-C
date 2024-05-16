@@ -13,8 +13,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int Hash(int vertexIndex, int hashSize) { return vertexIndex % hashSize; }
-
+/**
+ *  @brief
+ *  @param  numVertices -
+ *  @param  hashSize    -
+ *  @retval             -
+ */
 Graph* CreateGraph(int numVertices, int hashSize) {
   Graph* graph = (Graph*)malloc(sizeof(Graph));
   if (graph != NULL) {
@@ -59,29 +63,6 @@ bool EdgeExists(Vertex* vertex, int dest) {
   return false;
 }
 
-bool VertexExists(const Graph* graph, int vertexIndex) {
-  int index = Hash(vertexIndex, graph->hashSize);
-  return graph->vertices[index] != NULL;
-}
-
-// Function to create a new vertex
-Vertex* CreateVertex(int vertexIndex) {
-  Vertex* newVertex = (Vertex*)malloc(sizeof(Vertex));
-  if (newVertex != NULL) {
-    newVertex->vertex = vertexIndex;
-    newVertex->edges = NULL;
-  }
-  return newVertex;
-}
-
-// Function to add a vertex to the graph
-void AddVertex(Graph* graph, int vertexIndex) {
-  if (!VertexExists(graph, vertexIndex)) {
-    int index = Hash(vertexIndex, graph->hashSize);
-    graph->vertices[index] = CreateVertex(vertexIndex);
-  }
-}
-
 void DisplayGraph(const Graph* graph) {
   if (graph == NULL) {
     printf("Graph is NULL\n");
@@ -96,7 +77,7 @@ void DisplayGraph(const Graph* graph) {
       continue;  // Skip empty slots
     }
 
-    printf("Vertex index %d -> ", vertex->vertex);
+    printf("Vertex index %d -> ", vertex->id);
     if (vertex->edges == NULL) {
       printf("No edges\n");
       continue;  // Skip to next vertex
@@ -120,16 +101,6 @@ bool EdgeExistsBetweenVertices(const Graph* graph, int src, int dest) {
 
   Vertex* sourceVertex = graph->vertices[Hash(src, graph->hashSize)];
   return EdgeExists(sourceVertex, dest);
-}
-
-// Function to find a vertex in the graph
-Vertex* FindVertex(const Graph* graph, int vertexIndex) {
-  if (!VertexExists(graph, vertexIndex)) {
-    return NULL;
-  }
-
-  int index = Hash(vertexIndex, graph->hashSize);
-  return graph->vertices[index];
 }
 
 // Function to remove an edge from a vertex
@@ -163,47 +134,6 @@ void RemoveEdge(Vertex* vertex, int dest) {
     prevEdge = currentEdge;
     currentEdge = currentEdge->next;
   }
-}
-
-void RemoveVertex(Graph* graph, int vertexIndex) {
-  if (graph == NULL || !VertexExists(graph, vertexIndex)) {
-    return;
-  }
-
-  Vertex* vertexToRemove = FindVertex(graph, vertexIndex);
-  int index = Hash(vertexIndex, graph->hashSize);
-
-  // Remove all edges connected to the vertex
-  Edge* edge = vertexToRemove->edges;
-  while (edge != NULL) {
-    Edge* nextEdge = edge->next;  // Store the next edge pointer
-    RemoveEdge(FindVertex(graph, vertexIndex), edge->dest);
-    edge = nextEdge;  // Move to the next edge
-  }
-
-  // Free the memory allocated for the edges of the vertex
-  edge = vertexToRemove->edges;
-  Edge* nextEdge;
-  while (edge != NULL) {
-    nextEdge = edge->next;
-    free(edge);
-    edge = nextEdge;
-  }
-
-  // Update indices of remaining vertices in the graph
-  for (int i = 0; i < graph->hashSize; ++i) {
-    Vertex* currentVertex = graph->vertices[i];
-    if (currentVertex != NULL && currentVertex->vertex > vertexIndex) {
-      currentVertex->vertex--;  // Decrement the index of vertices greater
-                                // than the removed one
-    }
-  }
-
-  // Free the memory allocated for the vertex itself
-  free(vertexToRemove);
-
-  // Set the pointer to NULL in the vertices array
-  graph->vertices[index] = NULL;
 }
 
 void DeleteGraph(Graph* graph) {
