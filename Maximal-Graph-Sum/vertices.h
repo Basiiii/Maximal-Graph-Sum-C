@@ -55,7 +55,7 @@ bool AddVertex(const Graph* graph, Vertex* vertex);
     @retval          - FAILURE_CREATING_VERTEX if memory allocation fails.
     @retval          - VERTEX_ALREADY_EXISTS if the vertex already exists.
 **/
-int CreateAddVertex(const Graph* graph, unsigned int vertexID);
+int CreateAddVertex(Graph* graph, unsigned int vertexID);
 
 /**
  *  @brief  Checks if a vertex exists or not.

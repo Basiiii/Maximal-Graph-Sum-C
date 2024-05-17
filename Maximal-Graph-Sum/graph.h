@@ -19,18 +19,23 @@
 /**
  *  @brief  Creates a new graph with the specified number of vertices and hash
  *          table size.
- *  @param  numVertices - The initial number of vertices in the graph.
  *  @param  hashSize    - The size of the hash table used to store vertices.
  *  @retval             - A pointer to the newly created graph.
  *  @retval             - NULL if memory allocation fails.
  */
-Graph* CreateGraph(unsigned int numVertices, unsigned int hashSize);
+Graph* CreateGraph(unsigned int hashSize);
 
 /**
     @brief Displays the graph in a text format to stdout.
     @param graph - The graph to be displayed.
 **/
 void DisplayGraph(const Graph* graph);
+
+/**
+    @brief Prints all edges within an edges linked list.
+    @param edge - The first edge.
+**/
+void PrintEdges(const Edge* edge);
 
 /**
     @brief Frees a given graph from memory.

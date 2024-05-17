@@ -8,27 +8,26 @@
     @copyright © Enrique George Rodrigues, 2024. All right reserved.
 
 **/
+#include "graph.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "graph-structure.h"
-
 /**
  *  @brief  Creates a new graph with the specified number of vertices and hash
  *          table size.
- *  @param  numVertices - The initial number of vertices in the graph.
  *  @param  hashSize    - The size of the hash table used to store vertices.
  *  @retval             - A pointer to the newly created graph.
  *  @retval             - NULL if memory allocation fails.
  */
-Graph* CreateGraph(unsigned int numVertices, unsigned int hashSize) {
+Graph* CreateGraph(unsigned int hashSize) {
   Graph* graph = (Graph*)malloc(sizeof(Graph));
   if (graph == NULL) {
     return NULL;  // Memory allocation for graph failed
   }
 
-  graph->numVertices = numVertices;
+  graph->numVertices = 0;
   graph->hashSize = hashSize;
   graph->vertices = (Vertex**)calloc(hashSize, sizeof(Vertex*));
   if (graph->vertices == NULL) {  // Additional check for calloc failure
@@ -54,24 +53,32 @@ void DisplayGraph(const Graph* graph) {
   // Iterate over the hash table array to display graph
   for (unsigned int i = 0; i < graph->hashSize; ++i) {
     Vertex* vertex = graph->vertices[i];
-    if (vertex == NULL) {
-      continue;  // Skip empty slots
-    }
 
-    printf("Vertex ID %d -> ", vertex->id);
-    if (vertex->edges == NULL) {
-      printf("No edges\n");
-      continue;  // Skip to next vertex
-    }
+    while (vertex != NULL) {  // Traverse the linked list of vertices
+      printf("Vertex ID %d -> ", vertex->id);
 
-    // Print edges
-    Edge* edge = vertex->edges;
-    while (edge != NULL) {
-      printf("(%d, %d) ", edge->dest, edge->weight);
-      edge = edge->next;
+      if (vertex->edges == NULL) {
+        printf("No edges\n");
+      }
+      else {
+        PrintEdges(vertex->edges);
+      }
+
+      vertex = vertex->next;  // Move to the next vertex in the linked list
     }
-    printf("\n");
   }
+}
+
+/**
+    @brief Prints all edges within an edges linked list.
+    @param edge - The first edge.
+**/
+void PrintEdges(const Edge* edge) {
+  while (edge != NULL) {
+    printf("(%d, %d) ", edge->dest, edge->weight);
+    edge = edge->next;
+  }
+  printf("\n");
 }
 
 /**
@@ -86,20 +93,20 @@ void FreeGraph(Graph* graph) {
   // Free each vertex's edges
   for (unsigned int i = 0; i < graph->hashSize; i++) {
     Vertex* vertex = graph->vertices[i];
+    while (vertex != NULL) {
+      Vertex* nextVertex = vertex->next;
 
-    if (vertex == NULL) {
-      continue;
+      // Free all edges of the current vertex
+      Edge* edge = vertex->edges;
+      while (edge != NULL) {
+        Edge* nextEdge = edge->next;
+        free(edge);       // Free the edge
+        edge = nextEdge;  // Move to the next edge
+      }
+
+      free(vertex);         // Free the vertex itself
+      vertex = nextVertex;  // Move to the next vertex in the linked list
     }
-
-    Edge* edge = vertex->edges;
-    while (edge != NULL) {
-      Edge* nextEdge = edge->next;
-      free(edge);       // Free the edge
-      edge = nextEdge;  // Move to the next edge
-    }
-
-    free(vertex);   // Free the vertex itself
-    vertex = NULL;  // Prevent dangling pointer
   }
 
   // Free the array of vertices

@@ -14,6 +14,7 @@
 
 #include "edges.h"
 #include "graph.h"
+#include "import-graph.h"
 #include "vertices.h"
 
 #pragma comment(lib, "Maximal-Graph-Sum.lib")
@@ -28,20 +29,11 @@ int main() {
   // Start the clock
   start = clock();
 
-  Graph* graph = CreateGraph(15, 60);
+  Graph* graph = CreateGraph(5000000);
 
-  for (int i = 0; i < 15; i++) {
-    CreateAddVertex(graph, i);
-  }
+  printf("\n%u\n", graph->numVertices);
 
-  // for (int i = 0; i < 2000000; i++) {
-  //   if (i < 3) {
-  //     CreateAddEdge(FindVertex(graph, i), 2, 5);
-  //   }
-  //   else {
-  //     CreateAddEdge(FindVertex(graph, i - 2), i, 5);
-  //   }
-  // }
+  ImportGraph("C:\\Users\\user\\Desktop\\test.txt", graph);
 
   // End the clock
   end = clock();
@@ -49,7 +41,21 @@ int main() {
   // Calculate the CPU time used
   cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-  DisplayGraph(graph);
+  // DisplayGraph(graph);
+
+  printf("\n%u\n", graph->numVertices);
+
+  // printf("\n");
+  // for (unsigned int i = 0; i < graph->hashSize; ++i) {
+  //   int vertexCount = 0;
+  //   Vertex* vertex = graph->vertices[i];
+  //   while (vertex != NULL) {
+  //     vertexCount++;
+  //     vertex = vertex->next;
+  //   }
+
+  //  printf("Hash position %u has %d vertices.\n", i, vertexCount);
+  //}
 
   FreeGraph(graph);
 
