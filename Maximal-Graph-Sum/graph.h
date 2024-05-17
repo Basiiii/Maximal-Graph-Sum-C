@@ -14,38 +14,7 @@
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 
 #include "graph-error-codes.h"
-
-/**
-    @struct Edge
-    @brief  Structure of an edge in the graph which contains a destination
-            vertex, weight and pointer to the next edge in the linked list.
-**/
-typedef struct Edge {
-  unsigned int dest;    // Destination vertex
-  unsigned int weight;  // Weight of the edge
-  struct Edge* next;    // Pointer to the next edge in the list
-} Edge;
-
-/**
-    @struct Vertex
-    @brief  Structure of a vertex of a graph which contains an identification
-            number and a linked list of all edges.
-**/
-typedef struct Vertex {
-  unsigned int id;  // Vertex id (identification)
-  Edge* edges;      // Start of linked list of adjacent vertices
-} Vertex;
-
-/**
-    @struct Graph
-    @brief  Structure of a graph built with a hash table for vertices and linked
-            lists for edges.
-**/
-typedef struct Graph {
-  unsigned int numVertices;  // Current number of vertices of the graph
-  unsigned int hashSize;     // Current size of hash table
-  Vertex** vertices;         // Hash table of vertices
-} Graph;
+#include "graph-structure.h"
 
 /**
  *  @brief  Creates a new graph with the specified number of vertices and hash

@@ -63,7 +63,7 @@ bool AddEdgeToVertex(Vertex* vertex, Edge* edge) {
     @retval        - False in the event of an error.
 **/
 bool CreateAddEdge(const Vertex* vertex, unsigned int dest,
-  unsigned int weight) {
+                   unsigned int weight) {
   Edge* edge = CreateEdge(dest, weight);
   if (edge == NULL) {
     return false;
@@ -107,7 +107,7 @@ bool EdgeExists(Vertex* vertex, unsigned int dest) {
   @retval       - False if the edge does not exist.
 **/
 bool EdgeExistsBetweenVertices(const Graph* graph, unsigned int src,
-  unsigned int dest) {
+                               unsigned int dest) {
   Vertex* sourceVertex = FindVertex(graph, src);
   if (sourceVertex == NULL) {
     return false;
@@ -144,8 +144,7 @@ int RemoveEdge(Vertex* vertex, unsigned int dest) {
       if (prevEdge == NULL) {
         // Edge is the first one in the list
         vertex->edges = currentEdge->next;
-      }
-      else {
+      } else {
         // Edge is somewhere in the middle or at the end of the list
         prevEdge->next = currentEdge->next;
       }
@@ -214,15 +213,13 @@ int RemoveEdgesPointingTo(Vertex* vertex, unsigned int targetVertexId) {
       // Remove the edge pointing to the target vertex
       if (prevEdge == NULL) {
         vertex->edges = nextEdge;
-      }
-      else {
+      } else {
         prevEdge->next = nextEdge;
       }
       free(currentEdge);
 
       currentEdge = nextEdge;
-    }
-    else {
+    } else {
       prevEdge = currentEdge;
       currentEdge = currentEdge->next;
     }

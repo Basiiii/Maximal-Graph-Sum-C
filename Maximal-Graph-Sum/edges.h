@@ -42,7 +42,7 @@ bool AddEdgeToVertex(Vertex* vertex, Edge* edge);
     @retval        - False in the event of an error.
 **/
 bool CreateAddEdge(const Vertex* vertex, unsigned int dest,
-  unsigned int weight);
+                   unsigned int weight);
 
 /**
   @brief  Checks if an edge exists.
@@ -62,7 +62,7 @@ bool EdgeExists(Vertex* vertex, unsigned int dest);
   @retval       - False if the edge does not exist.
 **/
 bool EdgeExistsBetweenVertices(const Graph* graph, unsigned int src,
-  unsigned int dest);
+                               unsigned int dest);
 
 /**
   @brief Removes a specific edge from a vertex.

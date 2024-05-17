@@ -8,11 +8,11 @@
     @copyright © Enrique George Rodrigues, 2024. All right reserved.
 
 **/
-#include "graph.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "graph-structure.h"
 
 /**
  *  @brief  Creates a new graph with the specified number of vertices and hash

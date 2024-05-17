@@ -139,6 +139,7 @@ xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
   <ItemGroup>
     <ClInclude Include="edges.h" />
     <ClInclude Include="graph-error-codes.h" />
+    <ClInclude Include="graph-structure.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="import-graph.h" />
     <ClInclude Include="search.h" />

@@ -45,7 +45,7 @@ Vertex* CreateVertex(unsigned int vertexID);
     @retval         - False if given graph is NULL.
     @retval         - True in the case of success.
 **/
-bool AddVertex(const Graph* graph, const Vertex* vertex);
+bool AddVertex(const Graph* graph, Vertex* vertex);
 
 /**
     @brief  Creates and adds a vertex to the hash table of a graph.

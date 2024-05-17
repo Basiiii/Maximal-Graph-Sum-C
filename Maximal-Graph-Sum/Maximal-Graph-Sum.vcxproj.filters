@@ -51,6 +51,9 @@
     <ClInclude Include="graph-error-codes.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="graph-structure.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graph.c">
