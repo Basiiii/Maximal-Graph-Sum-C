@@ -15,6 +15,8 @@
 
 #include "graph.h"
 
-int ImportGraph(const char* filename, Graph* graph);
+int ImportGraphWhole(const char* filename, Graph* graph);
+
+int ImportGraphLBL(const char* filename, Graph* graph);
 
 #endif  // !IMPORT_GRAPH_H

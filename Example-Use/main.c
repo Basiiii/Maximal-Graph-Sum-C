@@ -15,6 +15,7 @@
 #include "edges.h"
 #include "graph.h"
 #include "import-graph.h"
+#include "search.h"
 #include "vertices.h"
 
 #pragma comment(lib, "Maximal-Graph-Sum.lib")
@@ -29,11 +30,11 @@ int main() {
   // Start the clock
   start = clock();
 
-  Graph* graph = CreateGraph(5000000);
+  Graph* graph = CreateGraph(10);
 
   printf("\n%u\n", graph->numVertices);
 
-  ImportGraph("C:\\Users\\user\\Desktop\\test.txt", graph);
+  ImportGraphLBL("C:\\Users\\user\\Desktop\\test.txt", graph);
 
   // End the clock
   end = clock();
@@ -41,9 +42,32 @@ int main() {
   // Calculate the CPU time used
   cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-  // DisplayGraph(graph);
+  DisplayGraph(graph);
 
   printf("\n%u\n", graph->numVertices);
+
+  // Print the CPU time used
+  printf("\n\nCPU time used: %f seconds\n", cpu_time_used);
+
+  start = clock();
+
+  unsigned int numPaths;
+  unsigned int** paths = FindAllPaths(graph, 2, 7, &numPaths);
+
+  // End the clock
+  end = clock();
+
+  // Calculate the CPU time used
+  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+  printf("Found %u paths from vertex 2 to vertex 7:\n", numPaths);
+  PrintPaths(paths, numPaths);
+
+  // Print the CPU time used
+  printf("\n\nCPU time used in search: %f seconds\n", cpu_time_used);
+
+  // Free allocated memory
+  FreePaths(paths, numPaths);
 
   // printf("\n");
   // for (unsigned int i = 0; i < graph->hashSize; ++i) {
@@ -58,9 +82,6 @@ int main() {
   //}
 
   FreeGraph(graph);
-
-  // Print the CPU time used
-  printf("\n\nCPU time used: %f seconds\n", cpu_time_used);
 
   return 0;
 }

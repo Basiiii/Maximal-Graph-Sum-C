@@ -1,200 +1,93 @@
-///**
-// *
-// *  @file      search.c
-// *  @brief
-// *  @details   ~
-// *  @author    Enrique Rodrigues
-// *  @date      14.05.2024
-// *  @copyright © Enrique Rodrigues, 2024. All right reserved.
-// *
-// */
-// #include "search.h"
-//
-// #include <stdio.h>
-//
-// #include "graph.h"
-//
-//// Function to initialize a path
-// Path* CreatePath(int length) {
-//   Path* path = (Path*)malloc(sizeof(Path));
-//   if (path == NULL) {
-//     return NULL;
-//   }
-//   path->nodes = (int*)malloc(length * sizeof(int));
-//   if (path->nodes == NULL) {
-//     free(path);
-//     return NULL;
-//   }
-//   path->length = 0;
-//   return path;
-// }
-//
-//// Function to copy a path
-// Path* CopyPath(const Path* source) {
-//   Path* newPath = CreatePath(source->length);
-//   if (newPath == NULL) {
-//     return NULL;
-//   }
-//   newPath->length = source->length;
-//   for (int i = 0; i < source->length; i++) {
-//     newPath->nodes[i] = source->nodes[i];
-//   }
-//   return newPath;
-// }
-//
-//// Function to add a node to a path
-// void AddToPath(Path* path, int node) {
-//   path->nodes[path->length] = node;
-//   path->length++;
-// }
-//
-//// Function to print a path
-// void PrintPath(const Path* path) {
-//   for (int i = 0; i < path->length; i++) {
-//     printf("%d ", path->nodes[i]);
-//   }
-//   printf("\n");
-// }
-//
-//// Function to free memory allocated for a path
-// void FreePath(Path* path) {
-//   free(path->nodes);
-//   free(path);
-// }
-//
-// void DFS(Graph* graph, Vertex* vertex, bool visited[], Path* currentPath) {
-//   if (vertex == NULL) {
-//     return;
-//   }
-//   visited[vertex->vertex] = true;
-//   AddToPath(currentPath, vertex->vertex);
-//
-//   Edge* edge = vertex->edges;
-//   while (edge != NULL) {
-//     if (!visited[edge->dest]) {
-//       DFS(graph, FindVertex(graph, edge->dest), visited, currentPath);
-//     }
-//     edge = edge->next;
-//   }
-//
-//   // After exploring all neighbors, backtrack by removing the current vertex
-//   // from the path
-//   RemoveFromPath(currentPath);
-//
-//   // Reset the visited status of the current vertex to allow it to be
-//   revisited
-//   // in other paths
-//   visited[vertex->vertex] = false;
-// }
-//
-//// Function to remove the last node from a path
-// void RemoveFromPath(Path* path) {
-//   if (path->length > 0) {
-//     path->length--;  // Decrement the length of the path to remove the last
-//     node
-//   }
-// }
-//
-//// Wrapper function for DFS traversal to find all possible paths
-// void DepthFirstSearch(Graph* graph, int start) {
-//   if (graph == NULL) {
-//     return;
-//   }
-//   bool* visited = (bool*)malloc(graph->numVertices * sizeof(bool));
-//   if (visited == NULL) {
-//     return;
-//   }
-//   for (int i = 0; i < graph->numVertices; ++i) {
-//     visited[i] = false;
-//   }
-//
-//   Vertex* startVertex = FindVertex(graph, start);
-//   if (startVertex != NULL) {
-//     printf("Started DFS from vertex %d\n", start);
-//     Path* currentPath =
-//         CreatePath(1);  // Initialize the path with the starting vertex
-//     AddToPath(currentPath,
-//               startVertex->vertex);  // Add the starting vertex to the path
-//     DFS(graph, startVertex, visited, currentPath);
-//     FreePath(currentPath);  // Free the path after DFS is done
-//   }
-//
-//   free(visited);
-// }
-//
-////
-//// void DFS(Graph* graph, Vertex* vertex, bool visited[]) {
-////  if (vertex == NULL) {
-////    return;
-////  }
-////  visited[vertex->vertex] = true;
-////  printf("%d ", vertex->vertex);
-////
-////  Edge* edge = vertex->edges;
-////  while (edge != NULL) {
-////    if (!visited[edge->dest]) {
-////      DFS(graph, FindVertex(graph, edge->dest), visited);
-////    }
-////    edge = edge->next;
-////  }
-////}
-////
-//// void DepthFirstSearch(Graph* graph, int start) {
-////  if (graph == NULL) {
-////    return;
-////  }
-////  bool* visited = (bool*)malloc(graph->numVertices * sizeof(bool));
-////  if (visited == NULL) {
-////    return;
-////  }
-////  for (int i = 0; i < graph->numVertices; ++i) {
-////    visited[i] = false;
-////  }
-////
-////  Vertex* startVertex = FindVertex(graph, start);
-////  if (startVertex != NULL) {
-////    DFS(graph, startVertex, visited);
-////  }
-////
-////  free(visited);
-////}
-//
-// void DFSUtil(Graph* graph, int src, int dest, bool* visited, int* path,
-//             int* pathIndex) {
-//  visited[src] = true;
-//  path[*pathIndex] =
-//      src;         // Dereference pathIndex to get the value it points to
-//  (*pathIndex)++;  // Increment the value pointed to by pathIndex
-//
-//  if (src == dest) {
-//    // Destination reached, print the path
-//    for (int i = 0; i < pathIndex; i++) {
-//      printf("%d ", path[i]);
-//    }
-//    printf("\n");
-//  } else {
-//    // Explore neighbors
-//    Edge* edge = graph->vertices->edges;
-//    while (edge != NULL) {
-//      if (!visited[edge->dest]) {
-//        DFSUtil(graph, edge->dest, dest, visited, path, pathIndex);
-//      }
-//      edge = edge->next;
-//    }
-//  }
-//
-//  // Backtrack
-//  pathIndex--;
-//  visited[src] = false;
-//}
-//
-// void FindAllPaths(Graph* graph, int src, int dest) {
-//  bool* visited = (bool*)calloc(graph->numVertices, sizeof(bool));
-//  int* path = (int*)calloc(graph->numVertices, sizeof(int));
-//  int pathIndex = 0;
-//
-//  DFSUtil(graph, src, dest, visited, path, &pathIndex);
-//
-//  free(visited);
-//  free(path);
-//}
+#include "search.h"
+
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "vertices.h"
+
+// Helper function to perform DFS and find all paths
+void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
+  unsigned int* path, unsigned int pathIndex, unsigned int*** paths,
+  unsigned int* numPaths, unsigned int* pathCapacity) {
+  // Mark the current node as visited and store it in the path
+  visited[src] = true;
+  path[pathIndex] = src;
+  pathIndex++;
+
+  // If we reached the destination, save the current path
+  if (src == dest) {
+    // Allocate more space for paths if needed
+    if (*numPaths == *pathCapacity) {
+      *pathCapacity *= 2;
+      *paths = (unsigned int**)realloc(*paths,
+        (*pathCapacity) * sizeof(unsigned int*));
+    }
+    // Copy the current path to the list of paths
+    (*paths)[*numPaths] =
+      (unsigned int*)malloc((pathIndex + 1) * sizeof(unsigned int));
+    memcpy((*paths)[*numPaths], path, pathIndex * sizeof(unsigned int));
+    (*paths)[*numPaths][pathIndex] =
+      UINT_MAX;  // Sentinel value to mark the end
+    (*numPaths)++;
+  }
+  else {
+    // Recur for all the vertices adjacent to the current vertex
+    Vertex* vertex = FindVertex(graph, src);
+    if (vertex) {
+      Edge* edge = vertex->edges;
+      while (edge != NULL) {
+        if (!visited[edge->dest]) {
+          DFS(graph, edge->dest, dest, visited, path, pathIndex, paths,
+            numPaths, pathCapacity);
+        }
+        edge = edge->next;
+      }
+    }
+  }
+
+  // Backtrack: remove the current vertex from the path and mark it as unvisited
+  pathIndex--;
+  visited[src] = false;
+}
+
+unsigned int** FindAllPaths(const Graph* graph, unsigned int src,
+  unsigned int dest, unsigned int* numPaths) {
+  // Initialize variables
+  *numPaths = 0;
+  unsigned int pathCapacity = 10;
+  unsigned int** paths =
+    (unsigned int**)malloc(pathCapacity * sizeof(unsigned int*));
+  bool* visited = (bool*)calloc(graph->hashSize, sizeof(bool));
+  unsigned int* path =
+    (unsigned int*)malloc(graph->hashSize * sizeof(unsigned int));
+  unsigned int pathIndex = 0;
+
+  // Perform DFS
+  DFS(graph, src, dest, visited, path, pathIndex, &paths, numPaths,
+    &pathCapacity);
+
+  // Clean up
+  free(visited);
+  free(path);
+
+  return paths;
+}
+
+void FreePaths(unsigned int** paths, unsigned int numPaths) {
+  for (unsigned int i = 0; i < numPaths; i++) {
+    free(paths[i]);
+  }
+  free(paths);
+}
+
+void PrintPaths(unsigned int** paths, unsigned int numPaths) {
+  for (unsigned int i = 0; i < numPaths; i++) {
+    printf("Path %u: ", i + 1);
+    for (unsigned int j = 0; paths[i][j] != UINT_MAX; j++) {
+      printf("%u ", paths[i][j]);
+    }
+    printf("\n");
+  }
+}

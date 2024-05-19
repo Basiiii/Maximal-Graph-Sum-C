@@ -1,27 +1,31 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
-#include <stdbool.h>
-
 #include "graph.h"
-//
-// typedef struct Path {
-//  int* nodes;  // Array to store the nodes in the path
-//  int length;  // Length of the path
-//} Path;
-//
-// Path* CreatePath(int length);
-// Path* CopyPath(const Path* source);
-// void AddToPath(Path* path, int node);
-// void PrintPath(const Path* path);
-// void FreePath(Path* path);
-// void RemoveFromPath(Path* path);
-//
-// void DFS(Graph* graph, Vertex* vertex, bool visited[], Path* currentPath);
-// void DepthFirstSearch(Graph* graph, int start);
-//
-// void DFSUtil(Graph* graph, int src, int dest, bool* visited, int* path,
-//             int* pathIndex);
-// void FindAllPaths(Graph* graph, int src, int dest);
 
-#endif  // !SEARCH_H
+/**
+    @brief Finds all paths from source to destination.
+    @param graph    - The graph to search paths in.
+    @param src      - The source vertex ID.
+    @param dest     - The destination vertex ID.
+    @retval         - A dynamically allocated array of paths, where each path is
+                     represented as a dynamically allocated array of vertex IDs.
+**/
+unsigned int** FindAllPaths(const Graph* graph, unsigned int src,
+  unsigned int dest, unsigned int* numPaths);
+
+/**
+    @brief Frees the memory allocated for paths.
+    @param paths    - The paths to be freed.
+    @param numPaths - The number of paths.
+**/
+void FreePaths(unsigned int** paths, unsigned int numPaths);
+
+/**
+    @brief Prints all the paths stored in the paths array.
+    @param paths    - The paths to be printed.
+    @param numPaths - The number of paths.
+**/
+void PrintPaths(unsigned int** paths, unsigned int numPaths);
+
+#endif  // SEARCH_H
