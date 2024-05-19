@@ -1,6 +1,5 @@
 #include "search.h"
 
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,27 +8,45 @@
 
 // Helper function to perform DFS and find all paths
 void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
-  unsigned int* path, unsigned int pathIndex, unsigned int*** paths,
-  unsigned int* numPaths, unsigned int* pathCapacity) {
+  unsigned int* pathVertices, unsigned int* pathWeights,
+  unsigned int pathIndex, PathNode** paths, unsigned int* numPaths,
+  unsigned int* pathCapacity) {
   // Mark the current node as visited and store it in the path
   visited[src] = true;
-  path[pathIndex] = src;
-  pathIndex++;
+  pathVertices[pathIndex] = src;
 
   // If we reached the destination, save the current path
   if (src == dest) {
     // Allocate more space for paths if needed
     if (*numPaths == *pathCapacity) {
       *pathCapacity *= 2;
-      *paths = (unsigned int**)realloc(*paths,
-        (*pathCapacity) * sizeof(unsigned int*));
     }
-    // Copy the current path to the list of paths
-    (*paths)[*numPaths] =
+
+    // Create a new PathNode for this path
+    PathNode* newPath = (PathNode*)malloc(sizeof(PathNode));
+    newPath->vertices =
       (unsigned int*)malloc((pathIndex + 1) * sizeof(unsigned int));
-    memcpy((*paths)[*numPaths], path, pathIndex * sizeof(unsigned int));
-    (*paths)[*numPaths][pathIndex] =
-      UINT_MAX;  // Sentinel value to mark the end
+    newPath->weights =
+      (unsigned int*)malloc((pathIndex + 1) * sizeof(unsigned int));
+    memcpy(newPath->vertices, pathVertices,
+      (pathIndex + 1) * sizeof(unsigned int));
+    memcpy(newPath->weights, pathWeights,
+      (pathIndex + 1) * sizeof(unsigned int));
+    newPath->length = pathIndex + 1;
+    newPath->next = NULL;
+
+    // Add the new path to the list of paths
+    if (*paths == NULL) {
+      *paths = newPath;
+    }
+    else {
+      PathNode* current = *paths;
+      while (current->next != NULL) {
+        current = current->next;
+      }
+      current->next = newPath;
+    }
+
     (*numPaths)++;
   }
   else {
@@ -39,55 +56,61 @@ void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
       Edge* edge = vertex->edges;
       while (edge != NULL) {
         if (!visited[edge->dest]) {
-          DFS(graph, edge->dest, dest, visited, path, pathIndex, paths,
-            numPaths, pathCapacity);
+          pathWeights[pathIndex] = edge->weight;
+          DFS(graph, edge->dest, dest, visited, pathVertices, pathWeights,
+            pathIndex + 1, paths, numPaths, pathCapacity);
         }
         edge = edge->next;
       }
     }
   }
 
-  // Backtrack: remove the current vertex from the path and mark it as unvisited
-  pathIndex--;
+  // Backtrack: mark the current vertex as unvisited
   visited[src] = false;
 }
 
-unsigned int** FindAllPaths(const Graph* graph, unsigned int src,
-  unsigned int dest, unsigned int* numPaths) {
+PathNode* FindAllPaths(const Graph* graph, unsigned int src, unsigned int dest,
+  unsigned int* numPaths) {
   // Initialize variables
   *numPaths = 0;
   unsigned int pathCapacity = 10;
-  unsigned int** paths =
-    (unsigned int**)malloc(pathCapacity * sizeof(unsigned int*));
+  PathNode* paths = NULL;
   bool* visited = (bool*)calloc(graph->hashSize, sizeof(bool));
-  unsigned int* path =
+  unsigned int* pathVertices =
     (unsigned int*)malloc(graph->hashSize * sizeof(unsigned int));
-  unsigned int pathIndex = 0;
+  unsigned int* pathWeights =
+    (unsigned int*)malloc(graph->hashSize * sizeof(unsigned int));
 
   // Perform DFS
-  DFS(graph, src, dest, visited, path, pathIndex, &paths, numPaths,
+  DFS(graph, src, dest, visited, pathVertices, pathWeights, 0, &paths, numPaths,
     &pathCapacity);
 
   // Clean up
   free(visited);
-  free(path);
+  free(pathVertices);
+  free(pathWeights);
 
   return paths;
 }
 
-void FreePaths(unsigned int** paths, unsigned int numPaths) {
-  for (unsigned int i = 0; i < numPaths; i++) {
-    free(paths[i]);
+void FreePaths(PathNode* paths) {
+  while (paths != NULL) {
+    PathNode* next = paths->next;
+    free(paths->vertices);
+    free(paths->weights);
+    free(paths);
+    paths = next;
   }
-  free(paths);
 }
 
-void PrintPaths(unsigned int** paths, unsigned int numPaths) {
-  for (unsigned int i = 0; i < numPaths; i++) {
-    printf("Path %u: ", i + 1);
-    for (unsigned int j = 0; paths[i][j] != UINT_MAX; j++) {
-      printf("%u ", paths[i][j]);
+void PrintPaths(PathNode* paths) {
+  unsigned int pathIndex = 1;
+  while (paths != NULL) {
+    printf("Path %u: ", pathIndex++);
+    for (unsigned int i = 0; i < paths->length - 1; i++) {
+      printf("%u -(%u)-> ", paths->vertices[i], paths->weights[i]);
     }
-    printf("\n");
+    printf("%u\n", paths->vertices[paths->length - 1]);
+    paths = paths->next;
   }
 }

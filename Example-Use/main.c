@@ -30,7 +30,7 @@ int main() {
   // Start the clock
   start = clock();
 
-  Graph* graph = CreateGraph(10);
+  Graph* graph = CreateGraph(50);
 
   printf("\n%u\n", graph->numVertices);
 
@@ -42,7 +42,7 @@ int main() {
   // Calculate the CPU time used
   cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-  DisplayGraph(graph);
+  // DisplayGraph(graph);
 
   printf("\n%u\n", graph->numVertices);
 
