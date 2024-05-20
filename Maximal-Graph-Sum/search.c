@@ -11,6 +11,9 @@ void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
   unsigned int* pathVertices, unsigned int* pathWeights,
   unsigned int pathIndex, PathNode** paths, unsigned int* numPaths,
   unsigned int* pathCapacity) {
+  // Debug statement to trace function execution
+  printf("DFS called with src: %u, dest: %u\n", src, dest);
+
   // Mark the current node as visited and store it in the path
   visited[src] = true;
   pathVertices[pathIndex] = src;
@@ -20,6 +23,7 @@ void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
     // Allocate more space for paths if needed
     if (*numPaths == *pathCapacity) {
       *pathCapacity *= 2;
+      *paths = (PathNode*)realloc(*paths, *pathCapacity * sizeof(PathNode));
     }
 
     // Create a new PathNode for this path
@@ -67,6 +71,9 @@ void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
 
   // Backtrack: mark the current vertex as unvisited
   visited[src] = false;
+
+  // Debug statement to trace backtracking
+  printf("Backtracking from vertex: %u\n", src);
 }
 
 PathNode* FindAllPaths(const Graph* graph, unsigned int src, unsigned int dest,

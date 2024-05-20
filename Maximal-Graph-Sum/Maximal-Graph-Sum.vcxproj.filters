@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Search">
       <UniqueIdentifier>{ca1afd69-8699-4ccb-8ab5-f5ef7abee4c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Calculate">
+      <UniqueIdentifier>{609010e3-216b-47ce-bab4-2249e57e7e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Calculate">
+      <UniqueIdentifier>{cf9aed4c-8327-4e5c-8f68-2622e1a327db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h">
@@ -54,6 +60,9 @@
     <ClInclude Include="graph-structure.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="dijkstra.h">
+      <Filter>Header Files\Calculate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graph.c">
@@ -70,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="search.c">
       <Filter>Source Files\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="dijsktra.c">
+      <Filter>Source Files\Calculate</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
