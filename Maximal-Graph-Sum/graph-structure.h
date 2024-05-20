@@ -12,8 +12,6 @@ typedef struct Edge {
   struct Edge* next;    // Pointer to the next edge in the list
 } Edge;
 
-typedef struct Vertex Vertex;
-
 /**
   @struct Vertex
   @brief  Structure of a vertex of a graph which contains an identification
@@ -26,9 +24,9 @@ typedef struct Vertex Vertex;
            hash table.
 **/
 typedef struct Vertex {
-  unsigned int id;  // Vertex id (identification)
-  Edge* edges;      // Start of linked list of adjacent vertices
-  Vertex* next;     // Next vertex in the hash position
+  unsigned int id;      // Vertex id (identification)
+  Edge* edges;          // Start of linked list of adjacent vertices
+  struct Vertex* next;  // Next vertex in the hash position
 } Vertex;
 
 /**

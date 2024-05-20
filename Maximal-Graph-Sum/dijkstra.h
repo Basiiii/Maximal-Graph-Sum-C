@@ -8,27 +8,27 @@ typedef struct HeapNode {
   unsigned int weight;
 } HeapNode;
 
-typedef struct MaxHeap {
+typedef struct MinHeap {
   HeapNode* nodes;
   unsigned int size;
   unsigned int capacity;
-} MaxHeap;
+} MinHeap;
 
-MaxHeap* createMaxHeap(unsigned int capacity);
+MinHeap* createMinHeap(unsigned int capacity);
 
 void swapHeapNode(HeapNode* a, HeapNode* b);
 
-void maxHeapify(MaxHeap* heap, int idx);
+void minHeapify(MinHeap* heap, int idx);
 
-HeapNode extractMax(MaxHeap* heap);
+HeapNode extractMin(MinHeap* heap);
 
-void insertMaxHeap(MaxHeap* heap, unsigned int vertex, unsigned int weight);
+void insertMinHeap(MinHeap* heap, unsigned int vertex, unsigned int weight);
 
-void DijkstraMaxSum(const Graph* graph, unsigned int src, unsigned int dest,
-  unsigned int* maxSum, unsigned int** path,
-  unsigned int* pathLength);
+void DijkstraShortestPath(const Graph* graph, unsigned int src,
+  unsigned int dest, unsigned int* minSum,
+  unsigned int** path, unsigned int* pathLength);
 
-void PrintMaxSumPath(unsigned int* path, unsigned int length,
-  unsigned int maxSum);
+void PrintShortestPath(unsigned int* path, unsigned int length,
+  unsigned int minSum);
 
 #endif  // !DIJKSTRA_H

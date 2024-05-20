@@ -17,6 +17,8 @@
 #include "edges.h"
 #include "graph.h"
 
+ // https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
+
  /**
     @brief  Computes a hash value for a given ID.
 
@@ -64,19 +66,6 @@ uint32_t Hash(uint32_t id, uint32_t hashSize) {
 
   return index;
 }
-
-// https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
-//
-// uint32_t UnHash(uint32_t index) {
-//    // Inicialize id as given index
-//    uint32_t id = index;
-//
-//    // Apply the unhash function
-//    id = ((id >> 16) ^ id) * 0x119de1f3;
-//    id = ((id >> 16) ^ id) * 0x119de1f3;
-//    id = (id >> 16) ^ id;
-//    return id;
-//}
 
 /**
  *  @brief Creates a new vertex with specified vertexID.
