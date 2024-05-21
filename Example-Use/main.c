@@ -63,7 +63,7 @@ int main() {
 
   unsigned int hashSize = 3000000;
   unsigned int numVertices = 1000000;
-  unsigned int numEdges = 10000;
+  unsigned int numEdges = 50000;
 
   // Create a graph with the specified hash size
   Graph* graph = CreateGraph(hashSize);
@@ -94,14 +94,8 @@ int main() {
 
   // Create and add edges to the specified vertex
   for (unsigned int i = 0; i < numEdges; i++) {
-    unsigned int dest = i + 1;  // Destination vertices: 1 to numEdges
-    unsigned int weight = 1;    // Constant weight for simplicity
-
-    if (!CreateAddEdge(srcVertex, dest, weight)) {
-      printf("Error adding edge to vertex %u.\n", srcVertexId);
-      FreeGraph(graph);
-      return 1;
-    }
+    Edge* edge = CreateEdge(i, 1);
+    AddEdgeToVertex(srcVertex, edge);
   }
 
   // End time measurement
