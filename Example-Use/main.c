@@ -144,21 +144,26 @@ int main() {
 
 #endif
 
-  // Graph* graph = CreateGraph(500);
-  // ImportGraphWhole("C :\\Users\\Basi\\Desktop\\test.txt", graph);
+  /*Graph* graph = CreateGraph(3000);
 
-  // SaveGraph(graph, "test");
+  ImportGraphWhole("C:\\Users\\user\\Desktop\\test.txt", graph);
 
-  // Graph* graph = LoadGraph("test");
+  DisplayGraph(graph);
 
-  // DisplayGraph(graph);
+  SaveGraph(graph, "test");
 
-  // FreeGraph(graph);
+  FreeGraph(graph);*/
+
+  printf("\n\n\n\n");
+
+  Graph* graph2 = LoadGraph("test");
+
+  DisplayGraph(graph2);
+
+  FreeGraph(graph2);
 
   // Graph* graph2 = CreateGraph(500);
   // LoadGraph("test");
-
-  // DisplayGraph(graph2);
 
   // FreeGraph(graph);
 

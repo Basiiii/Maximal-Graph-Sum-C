@@ -127,6 +127,7 @@ xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>

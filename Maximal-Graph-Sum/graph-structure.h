@@ -8,11 +8,11 @@
 #ifndef GRAPH_STRUCTURE_H
 #define GRAPH_STRUCTURE_H
 
-/**
-  @struct Edge
-  @brief  Structure of an edge in the graph which contains a destination
-          vertex, weight and pointer to the next edge in the linked list.
-**/
+ /**
+   @struct Edge
+   @brief  Structure of an edge in the graph which contains a destination
+           vertex, weight and pointer to the next edge in the linked list.
+ **/
 typedef struct Edge {
   unsigned int dest;    // Destination vertex
   unsigned int weight;  // Weight of the edge
