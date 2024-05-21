@@ -1,8 +1,8 @@
 /**
 
     @file      vertices.h
-    @brief
-    @details   ~
+    @brief     Function definitions for vertex creation, deletion and
+               management.
     @author    Enrique George Rodrigues
     @date      16.05.2024
     @copyright © Enrique George Rodrigues, 2024. All right reserved.

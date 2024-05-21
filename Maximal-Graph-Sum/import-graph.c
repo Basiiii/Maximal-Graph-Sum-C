@@ -25,11 +25,17 @@
 #define ERROR_OPENING_FILE -1
 #define MAX_FILE_SIZE_EXCEEDED -2
 #define ERROR_ALLOCATING_MEMORY -3
+#define SUCCESS_IMPORTING 0
 
 #define INVALID_INPUT -1
 
 #include "import-graph.h"
 
+/**
+ *  @brief  Helper function to calculate the size of the file.
+ *  @param  file - A pointer to the file whose size we will check.
+ *  @retval      - The size of the file.
+ */
 static size_t GetFileSizeCustom(FILE* file) {
   fseek(file, 0, SEEK_END);
   size_t size = ftell(file);
@@ -38,6 +44,12 @@ static size_t GetFileSizeCustom(FILE* file) {
   return size;
 }
 
+/**
+ *  @brief  Imports a graph from a text file with a CSV style format.
+ *  @param  filename - The name of the text file.
+ *  @param  graph    - The graph where we will place the data.
+ *  @retval          -
+ */
 int ImportGraphWhole(const char* filename, Graph* graph) {
   // Open file
   FILE* file = fopen(filename, "r");
@@ -76,6 +88,7 @@ int ImportGraphWhole(const char* filename, Graph* graph) {
   const char* lineStart = fileContent;
   const char* lineEnd = NULL;
 
+  // Iterate over file
   while ((lineEnd = strchr(lineStart, '\n')) != NULL) {
     // Copy the line to a temporary buffer (to null-terminate it)
     size_t lineLength = lineEnd - lineStart;
@@ -116,7 +129,7 @@ int ImportGraphWhole(const char* filename, Graph* graph) {
   free(line);
   free(fileContent);
 
-  return 0;  // Success
+  return SUCCESS_IMPORTING;
 }
 
 int ImportGraphLBL(const char* filename, Graph* graph) {
@@ -178,4 +191,87 @@ int ImportGraphLBL(const char* filename, Graph* graph) {
 
   free(fileContent);
   return 0;  // Success
+}
+
+/**
+ *  @brief  Loads a graph from a binary file.
+ *  @param  filename - The name of the binary file.
+ *  @retval          -
+ */
+Graph* LoadGraph(const char* filename) {
+  FILE* file = fopen(filename, "rb");
+  if (file == NULL) {
+    return NULL;
+  }
+
+  Graph* graph = (Graph*)malloc(sizeof(Graph));
+  if (graph == NULL) {
+    fclose(file);
+    return NULL;
+  }
+
+  // Read number of vertices and hash size
+  fread(&graph->numVertices, sizeof(unsigned int), 1, file);
+  fread(&graph->hashSize, sizeof(unsigned int), 1, file);
+
+  // Allocate memory for hash table of vertices
+  graph->vertices = (Vertex**)malloc(graph->hashSize * sizeof(Vertex*));
+  if (graph->vertices == NULL) {
+    fclose(file);
+    free(graph);
+    return NULL;
+  }
+
+  // Initialize hash table entries to NULL
+  for (unsigned int i = 0; i < graph->hashSize; ++i) {
+    graph->vertices[i] = NULL;
+  }
+
+  unsigned int vertexID;
+  unsigned int dest;
+  unsigned int weight;
+
+  while (fread(&vertexID, sizeof(unsigned int), 1, file) == 1) {
+    Vertex* vertex = (Vertex*)malloc(sizeof(Vertex));
+    if (vertex == NULL) {
+      fclose(file);
+      FreeGraph(graph);
+      return NULL;
+    }
+
+    vertex->id = vertexID;
+    vertex->edges = NULL;
+    vertex->next = NULL;
+
+    Vertex** bucket = &graph->vertices[Hash(vertexID, graph->hashSize)];
+    if (*bucket == NULL) {
+      *bucket = vertex;
+    } else {
+      vertex->next = *bucket;
+      *bucket = vertex;
+    }
+
+    while (fread(&dest, sizeof(unsigned int), 1, file) == 1) {
+      if (dest == 0xFFFFFFFF) {
+        break;  // End of edge list
+      }
+      fread(&weight, sizeof(unsigned int), 1, file);
+
+      Edge* edge = (Edge*)malloc(sizeof(Edge));
+      if (edge == NULL) {
+        fclose(file);
+        FreeGraph(graph);
+        return NULL;
+      }
+
+      edge->dest = dest;
+      edge->weight = weight;
+
+      edge->next = vertex->edges;
+      vertex->edges = edge;
+    }
+  }
+
+  fclose(file);
+  return graph;
 }

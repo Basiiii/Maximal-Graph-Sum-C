@@ -1,3 +1,10 @@
+/**
+ *  @file      graph-structure.h
+ *  @brief     The structure definitions of the graph.
+ *  @author    Enrique Rodrigues
+ *  @date      21.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ */
 #ifndef GRAPH_STRUCTURE_H
 #define GRAPH_STRUCTURE_H
 

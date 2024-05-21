@@ -100,7 +100,7 @@ O sistema utilizado para os testes possui uma quantidade suficiente de memória 
 
 O objetivo dos testes de desempenho é verificar a eficiência da implementação em termos de tempo de execução das operações, garantindo que o grafo possa manipular um grande número de vértices e arestas de forma eficiente.
 
-### Testes da Função `CreateAddVertex()`
+### Teste de Criação e Adição de Vértices
 
 **Procedimento**:
 
@@ -113,15 +113,25 @@ O objetivo dos testes de desempenho é verificar a eficiência da implementaçã
 - **Tempo Médio**: O tempo médio para criar e adicionar 1.000.000 (um milhão) de vértices ao grafo foi de `0,223000s` (segundos).
 - **Desvio Padrão**: O desvio padrão dos tempos de execução foi de aproximadamente `0,00356s` (segundos).
 
-### Testes da Função `CreateAddEdge()`
+### Teste de Criação e Adição de Arestas
 
 **Procedimento**:
 
-- Inserir 1.000.000 (um milhão) de vértices no grafo.
-- Medir o tempo de execução da inserção dos vértices no grafo.
+- Inserir 1.000.000 (um milhão) de arestas no grafo.
+- Medir o tempo de execução da inserção das arestas no grafo.
 - Repetir o teste 10 vezes para calcular a média e o desvio padrão dos tempos de execução.
 
 **Resultados**:
 
-- **Tempo Médio**: O tempo médio para criar e adicionar 1.000.000 (um milhão) de vértices ao grafo foi de `0,223000s` (segundos).
-- **Desvio Padrão**: O desvio padrão dos tempos de execução foi de aproximadamente `0,00356s` (segundos).
+- **Tempo Médio**: O tempo médio para criar e adicionar 1.000.000 (um milhão) de arestas ao grafo foi de `s` (segundos).
+- **Desvio Padrão**: O desvio padrão dos tempos de execução foi de aproximadamente `s` (segundos).
+
+### Teste de Importar de Ficheiro Texto
+
+**Procedimento**:
+
+- Importar um grafo de um ficheiro de texto com 1.000.000 (um milhão) de vértices e até 10 arestas para cada vértice.
+- Medir o tempo de execução da importação.
+- Repetir o teste 10 vezes para calcular a média e o desvio padrão dos tempos de execução.
+
+**Resultados**:

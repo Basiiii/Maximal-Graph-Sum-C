@@ -1,8 +1,10 @@
 /**
 
     @file      main.c
-    @brief
-    @details   ~
+    @brief     Example program to showcase and test performance of the graph
+               library.
+    @details   This program showcases how to use the graph library and includes
+               performance tests.
     @author    Enrique George Rodrigues
     @date      29.04.2024
     @copyright © Enrique George Rodrigues, 2024. All right reserved.
@@ -14,14 +16,13 @@
 
 #include "dijkstra.h"
 #include "edges.h"
+#include "export-graph.h"
 #include "graph.h"
 #include "import-graph.h"
 #include "search.h"
 #include "vertices.h"
 
 #pragma comment(lib, "Maximal-Graph-Sum.lib")
-
-#define CREATE_ADD_EDGES_TEST
 
 int main() {
   // Variables used to measure time
@@ -63,7 +64,7 @@ int main() {
 
   unsigned int hashSize = 3000000;
   unsigned int numVertices = 1000000;
-  unsigned int numEdges = 50000;
+  unsigned int numEdges = 1000000;
 
   // Create a graph with the specified hash size
   Graph* graph = CreateGraph(hashSize);
@@ -119,8 +120,47 @@ int main() {
 
 #endif  // CREATE_ADD_EDGE_TEST
 
-  // ImportGraphLBL("C:\\Users\\user\\Desktop\\test.txt", graph);
-  // start = clock();
+#ifdef IMPORT_TEST
+  printf("Executing import test...\n");
+
+  // Create graph
+  Graph* graph = CreateGraph(1000000);
+
+  // Start clock
+  start = clock();
+
+  // Import from text file
+  ImportGraphWhole("C:\\Users\\Basi\\Desktop\\test.txt", graph);
+
+  // End clock
+  end = clock();
+
+  // Result
+  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  printf("CPU time used during import: %f seconds\n", cpuTimeUsed);
+
+  // Free Graph from memory
+  FreeGraph(graph);
+
+#endif
+
+  // Graph* graph = CreateGraph(500);
+  // ImportGraphWhole("C :\\Users\\Basi\\Desktop\\test.txt", graph);
+
+  // SaveGraph(graph, "test");
+
+  // Graph* graph = LoadGraph("test");
+
+  // DisplayGraph(graph);
+
+  // FreeGraph(graph);
+
+  // Graph* graph2 = CreateGraph(500);
+  // LoadGraph("test");
+
+  // DisplayGraph(graph2);
+
+  // FreeGraph(graph);
 
   // unsigned int numPaths = 0;
   // unsigned int** paths = FindAllPaths(graph, 2, 6, &numPaths);

@@ -1,8 +1,7 @@
 /**
 
     @file      edges.h
-    @brief
-    @details   ~
+    @brief     Function definitions for edge creation, deletion and management.
     @author    Enrique George Rodrigues
     @date      16.05.2024
     @copyright © Enrique George Rodrigues, 2024. All right reserved.
@@ -61,7 +60,7 @@ bool EdgeExists(Vertex* vertex, unsigned int dest);
   @retval       - False if the edge does not exist.
 **/
 bool EdgeExistsBetweenVertices(const Graph* graph, unsigned int src,
-  unsigned int dest);
+                               unsigned int dest);
 
 /**
   @brief Removes a specific edge from a vertex.

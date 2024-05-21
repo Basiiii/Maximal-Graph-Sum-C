@@ -13,17 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Import">
-      <UniqueIdentifier>{b52731c2-2060-4481-827e-e538ee5370e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graph">
       <UniqueIdentifier>{1b7ae2c0-3048-4583-a964-b385a9c33253}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Graph">
       <UniqueIdentifier>{eb57e0db-7314-434a-b462-d9b845ab2e6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Import">
-      <UniqueIdentifier>{b3e9debd-f055-4792-a35a-19e7fa4ce203}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Search">
       <UniqueIdentifier>{1406f94a-19e4-4935-bf4b-2564d1dbd059}</UniqueIdentifier>
@@ -37,6 +31,12 @@
     <Filter Include="Header Files\Calculate">
       <UniqueIdentifier>{cf9aed4c-8327-4e5c-8f68-2622e1a327db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\I/O">
+      <UniqueIdentifier>{b3e9debd-f055-4792-a35a-19e7fa4ce203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\I/O">
+      <UniqueIdentifier>{b52731c2-2060-4481-827e-e538ee5370e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h">
@@ -49,7 +49,7 @@
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
     <ClInclude Include="import-graph.h">
-      <Filter>Header Files\Import</Filter>
+      <Filter>Header Files\I/O</Filter>
     </ClInclude>
     <ClInclude Include="search.h">
       <Filter>Header Files\Search</Filter>
@@ -63,6 +63,9 @@
     <ClInclude Include="dijkstra.h">
       <Filter>Header Files\Calculate</Filter>
     </ClInclude>
+    <ClInclude Include="export-graph.h">
+      <Filter>Header Files\I/O</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graph.c">
@@ -75,13 +78,16 @@
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
     <ClCompile Include="import-graph.c">
-      <Filter>Source Files\Import</Filter>
+      <Filter>Source Files\I/O</Filter>
     </ClCompile>
     <ClCompile Include="search.c">
       <Filter>Source Files\Search</Filter>
     </ClCompile>
     <ClCompile Include="dijsktra.c">
       <Filter>Source Files\Calculate</Filter>
+    </ClCompile>
+    <ClCompile Include="export-graph.c">
+      <Filter>Source Files\I/O</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

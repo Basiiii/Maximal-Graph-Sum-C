@@ -19,4 +19,11 @@ int ImportGraphWhole(const char* filename, Graph* graph);
 
 int ImportGraphLBL(const char* filename, Graph* graph);
 
+/**
+ *  @brief  Loads a graph from a binary file.
+ *  @param  filename - The name of the binary file.
+ *  @retval          -
+ */
+Graph* LoadGraph(const char* filename);
+
 #endif  // !IMPORT_GRAPH_H

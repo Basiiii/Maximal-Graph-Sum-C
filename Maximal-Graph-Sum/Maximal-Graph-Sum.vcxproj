@@ -139,6 +139,7 @@ xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
   <ItemGroup>
     <ClInclude Include="dijkstra.h" />
     <ClInclude Include="edges.h" />
+    <ClInclude Include="export-graph.h" />
     <ClInclude Include="graph-error-codes.h" />
     <ClInclude Include="graph-structure.h" />
     <ClInclude Include="graph.h" />
@@ -149,6 +150,7 @@ xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
   <ItemGroup>
     <ClCompile Include="dijsktra.c" />
     <ClCompile Include="edges.c" />
+    <ClCompile Include="export-graph.c" />
     <ClCompile Include="graph.c" />
     <ClCompile Include="import-graph.c" />
     <ClCompile Include="search.c" />
