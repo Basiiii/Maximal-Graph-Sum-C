@@ -1,97 +1,165 @@
+/**
+ *
+ *  @file      search.c
+ *  @brief     Function implementations for search algorithms to find all paths
+               and calculate the sum of all edges in a path.
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ *
+ */
 #include "search.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "vertices.h"
 
-/**
-    @brief Performs Depth-First-Search on a given graph from a given source to a
-           given destination.
-    @param graph        - The graph to perform DFS on.
-    @param src          - The source vertex.
-    @param dest         - The destination vertex.
-    @param visited      - Boolean array of visited vertices.
-    @param pathVertices - Integer array to store path vertices.
-    @param pathWeights  - Integer array to store path weights.
-    @param pathIndex    - Index of a path.
-    @param paths        - Linked list to store all paths.
-    @param numPaths     - The number of paths in the linked list.
-    @param pathCapacity - The max capacity of a path.
-**/
-void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
-  unsigned int* pathVertices, unsigned int* pathWeights,
-  unsigned int pathIndex, PathNode** paths, unsigned int* numPaths,
-  unsigned int* pathCapacity) {
-  // Debug statement to trace function execution
-  printf("DFS called with src: %u, dest: %u\n", src, dest);
-
-  // Mark the current node as visited and store it in the path
-  visited[src] = true;
-  pathVertices[pathIndex] = src;
-
-  // If we reached the destination, save the current path
-  if (src == dest) {
-    // Allocate more space for paths if needed
-    if (*numPaths == *pathCapacity) {
-      *pathCapacity *= 2;
-      *paths = (PathNode*)realloc(*paths, *pathCapacity * sizeof(PathNode));
-    }
-
-    // Create a new PathNode for this path
-    PathNode* newPath = (PathNode*)malloc(sizeof(PathNode));
-    newPath->vertices =
-      (unsigned int*)malloc((pathIndex + 1) * sizeof(unsigned int));
-    newPath->weights =
-      (unsigned int*)malloc((pathIndex + 1) * sizeof(unsigned int));
-    memcpy(newPath->vertices, pathVertices,
-      (pathIndex + 1) * sizeof(unsigned int));
-    memcpy(newPath->weights, pathWeights,
-      (pathIndex + 1) * sizeof(unsigned int));
-    newPath->length = pathIndex + 1;
-    newPath->next = NULL;
-
-    // Add the new path to the list of paths
-    if (*paths == NULL) {
-      *paths = newPath;
+ /**
+  * @brief Adds the current path to the list of paths in the context.
+  *
+  * @param context - Pointer to the DFSContext containing the current path and
+  *                  paths list.
+  * @return bool - True if the path is successfully added, false otherwise.
+  */
+bool AddPath(DFSContext* context) {
+  if (*context->numPaths == *context->pathCapacity) {
+    *context->pathCapacity *= 2;
+    PathNode** paths = (PathNode**)realloc(
+      *context->paths, *context->pathCapacity * sizeof(PathNode*));
+    if (paths != NULL) {
+      *context->paths = paths;
     }
     else {
-      PathNode* current = *paths;
-      while (current->next != NULL) {
-        current = current->next;
-      }
-      current->next = newPath;
+      return false;  // Memory reallocation failed
     }
+  }
 
-    (*numPaths)++;
+  // Allocate memory for a new path
+  PathNode* newPath = (PathNode*)malloc(sizeof(PathNode));
+  if (newPath == NULL) {
+    return false;  // Memory allocation for newPath failed
+  }
+
+  // Allocate memory for the vertices and weights of the new path
+  newPath->vertices =
+    (unsigned int*)malloc((context->pathIndex + 1) * sizeof(unsigned int));
+  newPath->weights =
+    (unsigned int*)malloc((context->pathIndex + 1) * sizeof(unsigned int));
+  if (newPath->vertices == NULL || newPath->weights == NULL) {
+    free(newPath->vertices);  // Free allocated memory for vertices if any
+    free(newPath->weights);   // Free allocated memory for weights if any
+    free(newPath);            // Free the PathNode itself
+    return false;  // Memory allocation for vertices or weights failed
+  }
+
+  // Copy the current path data to the new path node
+  memcpy(newPath->vertices, context->pathVertices,
+    (context->pathIndex + 1) * sizeof(unsigned int));
+  memcpy(newPath->weights, context->pathWeights,
+    (context->pathIndex + 1) * sizeof(unsigned int));
+  newPath->length = context->pathIndex + 1;
+  newPath->next = NULL;
+
+  // Add the new path to the paths list
+  if (*context->paths == NULL) {
+    *context->paths = newPath;
   }
   else {
-    // Recur for all the vertices adjacent to the current vertex
-    Vertex* vertex = FindVertex(graph, src);
-    if (vertex) {
-      Edge* edge = vertex->edges;
-      while (edge != NULL) {
-        if (!visited[edge->dest]) {
-          pathWeights[pathIndex] = edge->weight;
-          DFS(graph, edge->dest, dest, visited, pathVertices, pathWeights,
-            pathIndex + 1, paths, numPaths, pathCapacity);
-        }
-        edge = edge->next;
-      }
+    PathNode* current = *context->paths;
+    while (current->next != NULL) {
+      current = current->next;
     }
+    current->next = newPath;
   }
 
-  // Backtrack: mark the current vertex as unvisited
-  visited[src] = false;
-
-  // Debug statement to trace backtracking
-  printf("Backtracking from vertex: %u\n", src);
+  (*context->numPaths)++;
+  return true;  // Path successfully added
 }
 
+/**
+ * @brief Marks the current vertex as unvisited for backtracking.
+ *
+ * @param context - Pointer to the DFSContext containing the visited status of
+ *                  vertices.
+ * @param vertex  - The vertex to be marked as unvisited.
+ */
+void Backtrack(DFSContext* context, unsigned int vertex) {
+  context->visited[vertex] = false;
+}
+
+/**
+ * @brief Recursively explores all adjacent vertices of the current vertex.
+ *
+ * @param context - Pointer to the DFSContext containing the graph and traversal
+ * state.
+ * @param src - The current source vertex being explored.
+ * @param dest - The destination vertex to which paths are being found.
+ * @return bool - True if all traversals complete successfully, false otherwise.
+ */
+bool TraverseEdges(DFSContext* context, unsigned int src, unsigned int dest) {
+  Vertex* vertex = FindVertex(context->graph, src);
+  if (!vertex) return true;  // No edges to traverse, return success
+
+  Edge* edge = vertex->edges;
+  bool success = true;
+
+  while (edge != NULL) {
+    if (!context->visited[edge->dest]) {
+      context->pathWeights[context->pathIndex] = edge->weight;
+      context->pathIndex++;
+      success = DepthFirstSearch(context, edge->dest, dest);
+      context->pathIndex--;
+      if (!success) break;  // Stop further traversal if failure occurs
+    }
+    edge = edge->next;
+  }
+
+  return success;
+}
+
+/**
+ * @brief Performs Depth-First Search (DFS) on the graph from a given source to
+ * a given destination.
+ *
+ * @param context - Pointer to the DFSContext containing the graph and traversal
+ * state.
+ * @param src - The source vertex from which DFS starts.
+ * @param dest - The destination vertex to which paths are being found.
+ * @return bool - True if the DFS completes successfully, false otherwise.
+ */
+bool DepthFirstSearch(DFSContext* context, unsigned int src,
+  unsigned int dest) {
+  context->visited[src] = true;
+  context->pathVertices[context->pathIndex] = src;
+
+  bool success = true;
+
+  if (src == dest) {
+    success = AddPath(context);
+  }
+  else {
+    success = TraverseEdges(context, src, dest);
+  }
+
+  Backtrack(context, src);
+  return success;
+}
+
+/**
+ * @brief Finds all paths from the source vertex to the destination vertex in
+ * the graph.
+ *
+ * @param graph - Pointer to the graph.
+ * @param src - The source vertex from which paths start.
+ * @param dest - The destination vertex to which paths are being found.
+ * @param numPaths - Pointer to store the number of paths found.
+ * @return PathNode* - Pointer to the head of the linked list of paths.
+ */
 PathNode* FindAllPaths(const Graph* graph, unsigned int src, unsigned int dest,
   unsigned int* numPaths) {
-  // Initialize variables
   *numPaths = 0;
   unsigned int pathCapacity = 10;
   PathNode* paths = NULL;
@@ -101,11 +169,24 @@ PathNode* FindAllPaths(const Graph* graph, unsigned int src, unsigned int dest,
   unsigned int* pathWeights =
     (unsigned int*)malloc(graph->hashSize * sizeof(unsigned int));
 
-  // Perform DFS
-  DFS(graph, src, dest, visited, pathVertices, pathWeights, 0, &paths, numPaths,
-    &pathCapacity);
+  DFSContext context = { .graph = graph,
+                        .pathVertices = pathVertices,
+                        .pathWeights = pathWeights,
+                        .visited = visited,
+                        .pathIndex = 0,
+                        .paths = &paths,
+                        .numPaths = numPaths,
+                        .pathCapacity = &pathCapacity };
 
-  // Clean up
+  bool success = DepthFirstSearch(&context, src, dest);
+
+  if (!success) {
+    // Free all paths if there was an error
+    FreePaths(paths);
+    paths = NULL;
+    *numPaths = 0;
+  }
+
   free(visited);
   free(pathVertices);
   free(pathWeights);
@@ -113,6 +194,11 @@ PathNode* FindAllPaths(const Graph* graph, unsigned int src, unsigned int dest,
   return paths;
 }
 
+/**
+ * @brief Frees the memory allocated for the list of paths.
+ *
+ * @param paths - Pointer to the head of the linked list of paths to be freed.
+ */
 void FreePaths(PathNode* paths) {
   while (paths != NULL) {
     PathNode* next = paths->next;
@@ -123,6 +209,11 @@ void FreePaths(PathNode* paths) {
   }
 }
 
+/**
+ * @brief Prints all paths stored in the linked list of paths.
+ *
+ * @param paths - Pointer to the head of the linked list of paths to be printed.
+ */
 void PrintPaths(PathNode* paths) {
   unsigned int pathIndex = 1;
   while (paths != NULL) {
@@ -140,6 +231,12 @@ void PrintPaths(PathNode* paths) {
   }
 }
 
+/**
+ * @brief Calculates the sum of the weights of the edges in the given path.
+ *
+ * @param path - Pointer to the PathNode containing the path.
+ * @return unsigned int - The total weight of the path.
+ */
 unsigned int CalculatePathSum(const PathNode* path) {
   unsigned int sum = 0;
   for (unsigned int i = 0; i < path->length - 1; i++) {

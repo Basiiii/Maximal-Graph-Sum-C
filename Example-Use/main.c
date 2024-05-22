@@ -25,7 +25,7 @@
 /* ============================= */
 /* Define Default file locations */
 /* ============================= */
-// #define USE_DESKTOP // Define this if you have the files on your Desktop
+#define USE_DESKTOP  // Define this if you have the files on your Desktop
 #ifdef USE_DESKTOP
 #define DEFAULT_USERS_FILE "C:\\Users\\"
 #define WINDOWS_USER_NAME "user\\"
@@ -35,7 +35,7 @@
 #define DEFAULT_LOCATION ""
 #endif
 
-#define DEFAULT_IMPORT_FILE_NAME DEFAULT_LOCATION "test.txt"
+#define DEFAULT_IMPORT_FILE_NAME DEFAULT_LOCATION "1000.txt"
 #define DEFAULT_EXPORT_FILE_NAME DEFAULT_LOCATION "export.txt"
 #define DEFAULT_SAVE_FILE_NAME DEFAULT_LOCATION "save.dat"
 #define DEFAULT_LOAD_FILE_NAME DEFAULT_SAVE_FILE_NAME
@@ -55,16 +55,16 @@
 /* ============== */
 #define UNKNOWN_ERROR -100
 
-/* ==================================== */
-/* Define the tests you wish to execute */
-/* ==================================== */
-// #define CREATE_ADD_VERTICES_TEST
-// #define CREATE_ADD_EDGES_TEST
-// #define IMPORT_TEST
-// #define EXPORT_TEST
-// #define SAVE_TEST
-// #define LOAD_TEST
-// #define FIND_ALL_PATHS_TEST
+/* =================================== */
+/* Define the test you wish to execute */
+/* =================================== */
+#define CREATE_ADD_VERTICES_TEST
+#define CREATE_ADD_EDGES_TEST
+#define IMPORT_TEST
+#define EXPORT_TEST
+#define SAVE_TEST
+#define LOAD_TEST
+#define FIND_ALL_PATHS_TEST
 
 /* =================== */
 /* Include the library */
@@ -73,32 +73,32 @@
 
 int main() {
   // Variables used to measure time
-  clock_t start;
-  clock_t end;
+  clock_t start = 0.0;
+  clock_t end = 0.0;
+  double cpuTimeUsed = 0.0;
 
 #ifdef CREATE_ADD_VERTICES_TEST
 
   printf("\n\nExecuting Create Add Vertices test...\n");
 
-  unsigned int numVertices = ONE_MILLION_TEST_NUM_VERTICES;
-  Graph* graph = CreateGraph(ONE_MILLION_TEST_HASH_SIZE);
+  Graph* graphVerticesTest = CreateGraph(ONE_MILLION_TEST_HASH_SIZE);
 
-  printf("Starting number of vertices: %u\n", graph->numVertices);
+  printf("Starting number of vertices: %u\n", graphVerticesTest->numVertices);
   start = clock();
 
   // Create and add one million vertices
-  for (unsigned int i = 0; i < numVertices; i++) {
-    CreateAddVertex(graph, i);
+  for (unsigned int i = 0; i < ONE_MILLION_TEST_NUM_VERTICES; i++) {
+    CreateAddVertex(graphVerticesTest, i);
   }
 
   end = clock();
-  printf("Ending number of vertices: %u\n", graph->numVertices);
+  printf("Ending number of vertices: %u\n", graphVerticesTest->numVertices);
 
   // Free Graph from memory
-  FreeGraph(graph);
+  FreeGraph(graphVerticesTest);
 
   // Calculate the CPU time used
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("CPU time used: %f seconds\n", cpuTimeUsed);
 
 #endif  //  CREATE_ADD_VERTICES_TEST
@@ -107,26 +107,23 @@ int main() {
 
   printf("\n\nExecuting Create Add Edges test...\n");
 
-  unsigned int hashSize = ONE_MILLION_TEST_HASH_SIZE;
-  unsigned int numVertices = ONE_MILLION_TEST_NUM_VERTICES;
-  unsigned int numEdges = ONE_MILLION_TEST_NUM_EDGES;
-  Graph* graph = CreateGraph(hashSize);
+  Graph* graphEdgesTest = CreateGraph(ONE_MILLION_TEST_HASH_SIZE);
 
   // Add vertices to the graph
-  for (unsigned int i = 0; i < numVertices; i++) {
-    if (CreateAddVertex(graph, i) != EXIT_SUCCESS) {
+  for (unsigned int i = 0; i < ONE_MILLION_TEST_NUM_VERTICES; i++) {
+    if (CreateAddVertex(graphEdgesTest, i) != EXIT_SUCCESS) {
       printf("Error creating vertex for testing.\n");
-      FreeGraph(graph);
+      FreeGraph(graphEdgesTest);
       return 1;
     }
   }
 
   // Choose a specific vertex to add edges to
   unsigned int srcVertexId = 0;
-  Vertex* srcVertex = FindVertex(graph, srcVertexId);
+  Vertex* srcVertex = FindVertex(graphEdgesTest, srcVertexId);
   if (srcVertex == NULL) {
     printf("Source vertex not found in the graph.\n");
-    FreeGraph(graph);
+    FreeGraph(graphEdgesTest);
     return 1;
   }
 
@@ -135,14 +132,14 @@ int main() {
   start = clock();
 
   // Create and add edges to the specified vertex
-  for (unsigned int i = 0; i < numEdges; i++) {
+  for (unsigned int i = 0; i < ONE_MILLION_TEST_NUM_EDGES; i++) {
     Edge* edge = CreateEdge(i, 1);
     AddEdgeToVertex(srcVertex, edge);
   }
 
   // End test
   end = clock();
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("CPU time used: %f seconds\n", cpuTimeUsed);
 
   // Verify the number of edges added
@@ -155,30 +152,29 @@ int main() {
   printf("Number of edges added: %u\n", edgeCount);
 
   // Free Graph from memory
-  FreeGraph(graph);
+  FreeGraph(graphEdgesTest);
 
 #endif  // CREATE_ADD_EDGE_TEST
 
 #ifdef IMPORT_TEST
 
   printf("\n\nExecuting import test...\n");
-  Graph* graph = CreateGraph(DEFAULT_HASH_SIZE);
-  const char* location = DEFAULT_IMPORT_FILE_NAME;
+  Graph* graphImportTest = CreateGraph(DEFAULT_HASH_SIZE);
 
   // Start test
   start = clock();
 
-  int res = ImportGraph(location, graph);
+  int resImport = ImportGraph(DEFAULT_IMPORT_FILE_NAME, graphImportTest);
 
   // End test
   end = clock();
 
   // Error control
-  if (res == EXIT_SUCCESS) {
+  if (resImport == EXIT_SUCCESS) {
     printf("Success.\n");
   }
   else {
-    switch (res) {
+    switch (resImport) {
     case ERROR_OPENING_FILE:
       printf("Error opening file.\n");
       exit(ERROR_OPENING_FILE);
@@ -194,17 +190,17 @@ int main() {
     }
   }
 
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("CPU time used during import: %f seconds\n", cpuTimeUsed);
-  FreeGraph(graph);
+  FreeGraph(graphImportTest);
 
 #endif
 
 #ifdef EXPORT_TEST
 
   printf("\n\nExecuting export test...\n");
-  Graph* graph = CreateGraph(DEFAULT_HASH_SIZE);
-  if (ImportGraph(DEFAULT_IMPORT_FILE_NAME, graph) != EXIT_SUCCESS) {
+  Graph* graphExportTest = CreateGraph(DEFAULT_HASH_SIZE);
+  if (ImportGraph(DEFAULT_IMPORT_FILE_NAME, graphExportTest) != EXIT_SUCCESS) {
     printf("Error importing graph.");
     exit(EXIT_FAILURE);
   }
@@ -212,32 +208,32 @@ int main() {
   // Start test
   start = clock();
 
-  int res = ExportGraph(DEFAULT_EXPORT_FILE_NAME, graph);
+  int resExport = ExportGraph(DEFAULT_EXPORT_FILE_NAME, graphExportTest);
 
   // End test
   end = clock();
 
   // Error control
-  if (res == EXIT_SUCCESS) {
+  if (resExport == EXIT_SUCCESS) {
     printf("Success.\n");
   }
   else {
     printf("Error creating file.\n");
-    FreeGraph(graph);
+    FreeGraph(graphExportTest);
     exit(EXIT_FAILURE);
   }
 
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("CPU time used during export: %f seconds\n", cpuTimeUsed);
-  FreeGraph(graph);
+  FreeGraph(graphExportTest);
 
 #endif
 
 #ifdef SAVE_TEST
 
   printf("\n\nExecuting save test...\n");
-  Graph* graph = CreateGraph(DEFAULT_HASH_SIZE);
-  if (ImportGraph(DEFAULT_IMPORT_FILE_NAME, graph) != EXIT_SUCCESS) {
+  Graph* graphSaveTest = CreateGraph(DEFAULT_HASH_SIZE);
+  if (ImportGraph(DEFAULT_IMPORT_FILE_NAME, graphSaveTest) != EXIT_SUCCESS) {
     printf("Error importing graph.");
     exit(EXIT_FAILURE);
   }
@@ -245,13 +241,13 @@ int main() {
   // Start test
   start = clock();
 
-  int res = SaveGraph(graph, DEFAULT_SAVE_FILE_NAME);
+  int resSave = SaveGraph(graphSaveTest, DEFAULT_SAVE_FILE_NAME);
 
   // End test
   end = clock();
 
   // Error control
-  switch (res) {
+  switch (resSave) {
   case EXIT_SUCCESS:
     break;
 
@@ -276,9 +272,9 @@ int main() {
     break;
   }
 
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("Success. CPU time used during save: %f seconds\n", cpuTimeUsed);
-  FreeGraph(graph);
+  FreeGraph(graphSaveTest);
 
 #endif
 
@@ -289,13 +285,13 @@ int main() {
   // Start test
   start = clock();
 
-  Graph* graph = LoadGraph(DEFAULT_LOAD_FILE_NAME);
+  Graph* graphLoadTest = LoadGraph(DEFAULT_LOAD_FILE_NAME);
 
   // End test
   end = clock();
 
   // Error control
-  if (graph != NULL) {
+  if (graphLoadTest != NULL) {
     printf("Success.\n");
   }
   else {
@@ -303,9 +299,9 @@ int main() {
     exit(UNKNOWN_ERROR);
   }
 
-  double cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpuTimeUsed = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf("CPU time used during load: %f seconds\n", cpuTimeUsed);
-  FreeGraph(graph);
+  FreeGraph(graphLoadTest);
 
 #endif
 
@@ -313,15 +309,16 @@ int main() {
 
   printf("\n\nExecuting \"find all paths in a graph\" test...\n");
 
-  Graph* graph = CreateGraph(FIND_ALL_PATHS_FILE_HASH_SIZE);
-  int res = ImportGraph(DEFAULT_FIND_ALL_PATHS_FILE_NAME, graph);
-  if (res != EXIT_SUCCESS) {
+  Graph* graphFAP = CreateGraph(FIND_ALL_PATHS_FILE_HASH_SIZE);
+  int importPrepareRes =
+    ImportGraph(DEFAULT_FIND_ALL_PATHS_FILE_NAME, graphFAP);
+  if (importPrepareRes != EXIT_SUCCESS) {
     printf("Error importing graph.\n");
     exit(EXIT_FAILURE);
   }
 
   unsigned int numPaths = 0;
-  PathNode* paths = FindAllPaths(graph, 2, 6, &numPaths);
+  PathNode* paths = FindAllPaths(graphFAP, 2, 6, &numPaths);
   if (paths == NULL) {
     printf("Error finding all paths.\n");
     exit(EXIT_FAILURE);
@@ -329,7 +326,7 @@ int main() {
 
   PrintPaths(paths);
 
-  FreeGraph(graph);
+  FreeGraph(graphFAP);
 
 #endif
 
