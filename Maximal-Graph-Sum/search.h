@@ -24,4 +24,6 @@ void FreePaths(PathNode* paths);
 
 void PrintPaths(PathNode* paths);
 
+unsigned int CalculatePathSum(const PathNode* path);
+
 #endif  // SEARCH_H

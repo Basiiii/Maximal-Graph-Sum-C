@@ -28,24 +28,25 @@
 
 #include "graph.h"
 
-/**
- *  @brief  Imports a graph from a text file with a CSV style format.
- *  @param  filename - The name of the text file.
- *  @param  graph    - The graph where we will place the data.
- *  @retval          - `SUCCESS_IMPORTING` if the graph was imported
- *                      successfully.
- *  @retval          - `ERROR_OPENING_FILE` if the file could not be opened.
- *  @retval          - `MAX_FILE_SIZE_EXCEEDED` if the max file size was
- *                     exceeded.
- *  @retval          - `ERROR_ALLOCATING_MEMORY` if there was an error
- *                     allocating memory.
- */
+ /**
+  *  @brief  Imports a graph from a text file with a CSV style format.
+  *  @param  filename - The name of the text file.
+  *  @param  graph    - The graph where we will place the data.
+  *  @retval          - `SUCCESS_IMPORTING` if the graph was imported
+  *                      successfully.
+  *  @retval          - `ERROR_OPENING_FILE` if the file could not be opened.
+  *  @retval          - `MAX_FILE_SIZE_EXCEEDED` if the max file size was
+  *                     exceeded.
+  *  @retval          - `ERROR_ALLOCATING_MEMORY` if there was an error
+  *                     allocating memory.
+  */
 int ImportGraph(const char* filename, Graph* graph);
 
 /**
  *  @brief  Loads a graph from a binary file.
  *  @param  filename - The name of the binary file.
- *  @retval          -
+ *  @retval          - A pointer to Graph with the data inside of it or NULL in
+ *                     the event of an error.
  */
 Graph* LoadGraph(const char* filename);
 

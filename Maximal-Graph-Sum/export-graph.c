@@ -16,13 +16,13 @@
 
 #include "graph-structure.h"
 
-/**
- *  @brief  Exports a graph to a CSV file format.
- *  @param  filename - The name of the CSV file.
- *  @param  graph    - The graph to be exported.
- *  @retval          - `EXIT_SUCCESS` on success, or an error code
- *                     indicating failure.
- */
+ /**
+  *  @brief  Exports a graph to a CSV file format.
+  *  @param  filename - The name of the CSV file.
+  *  @param  graph    - The graph to be exported.
+  *  @retval          - `EXIT_SUCCESS` on success
+  *  @retval          - `ERROR_OPENING_FILE` if there was an error opening file
+  */
 int ExportGraph(const char* filename, const Graph* graph) {
   FILE* file = fopen(filename, "w");
   if (!file) {
@@ -36,7 +36,7 @@ int ExportGraph(const char* filename, const Graph* graph) {
       Edge* edge = vertex->edges;
       while (edge) {
         fprintf(file, ";%u;%u", edge->dest,
-                edge->weight);  // Write the destination and weight
+          edge->weight);  // Write the destination and weight
         edge = edge->next;
       }
       fprintf(file, "\n");  // Newline for the next vertex
@@ -79,7 +79,7 @@ static int WriteEdgeToFile(FILE* file, const Edge* edge) {
   }
 
   if (fwrite(&edge->dest, sizeof(unsigned int), 1, file) != 1 ||
-      fwrite(&edge->weight, sizeof(unsigned int), 1, file) != 1) {
+    fwrite(&edge->weight, sizeof(unsigned int), 1, file) != 1) {
     fclose(file);
     return EXIT_FAILURE;
   }

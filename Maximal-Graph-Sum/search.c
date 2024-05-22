@@ -6,7 +6,20 @@
 
 #include "vertices.h"
 
-// Helper function to perform DFS and find all paths
+/**
+    @brief Performs Depth-First-Search on a given graph from a given source to a
+           given destination.
+    @param graph        - The graph to perform DFS on.
+    @param src          - The source vertex.
+    @param dest         - The destination vertex.
+    @param visited      - Boolean array of visited vertices.
+    @param pathVertices - Integer array to store path vertices.
+    @param pathWeights  - Integer array to store path weights.
+    @param pathIndex    - Index of a path.
+    @param paths        - Linked list to store all paths.
+    @param numPaths     - The number of paths in the linked list.
+    @param pathCapacity - The max capacity of a path.
+**/
 void DFS(const Graph* graph, unsigned int src, unsigned int dest, bool* visited,
   unsigned int* pathVertices, unsigned int* pathWeights,
   unsigned int pathIndex, PathNode** paths, unsigned int* numPaths,
@@ -117,7 +130,20 @@ void PrintPaths(PathNode* paths) {
     for (unsigned int i = 0; i < paths->length - 1; i++) {
       printf("%u -(%u)-> ", paths->vertices[i], paths->weights[i]);
     }
-    printf("%u\n", paths->vertices[paths->length - 1]);
+    printf("%u", paths->vertices[paths->length - 1]);
+
+    // Calculate and print the sum of the current path
+    unsigned int sum = CalculatePathSum(paths);
+    printf(" (Total Weight: %u)\n", sum);
+
     paths = paths->next;
   }
+}
+
+unsigned int CalculatePathSum(const PathNode* path) {
+  unsigned int sum = 0;
+  for (unsigned int i = 0; i < path->length - 1; i++) {
+    sum += path->weights[i];
+  }
+  return sum;
 }
