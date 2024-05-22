@@ -1,13 +1,13 @@
 /**
-
-    @file      edges.c
-    @brief
-    @details   ~
-    @author    Enrique George Rodrigues
-    @date      16.05.2024
-    @copyright © Enrique George Rodrigues, 2024. All right reserved.
-
-**/
+ *
+ *  @file      edges.c
+ *  @brief     Function implementations for edge creation, deletion and
+               management.
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ *
+ */
 #include "edges.h"
 
 #include <stdbool.h>
@@ -110,7 +110,7 @@ bool EdgeExists(Vertex* vertex, unsigned int dest) {
   @retval       - False if the edge does not exist.
 **/
 bool EdgeExistsBetweenVertices(const Graph* graph, unsigned int src,
-  unsigned int dest) {
+                               unsigned int dest) {
   Vertex* sourceVertex = FindVertex(graph, src);
   if (sourceVertex == NULL) {
     return false;
@@ -147,8 +147,7 @@ int RemoveEdge(Vertex* vertex, unsigned int dest) {
       if (prevEdge == NULL) {
         // Edge is the first one in the list
         vertex->edges = currentEdge->next;
-      }
-      else {
+      } else {
         // Edge is somewhere in the middle or at the end of the list
         prevEdge->next = currentEdge->next;
       }
@@ -217,15 +216,13 @@ int RemoveEdgesPointingTo(Vertex* vertex, unsigned int targetVertexId) {
       // Remove the edge pointing to the target vertex
       if (prevEdge == NULL) {
         vertex->edges = nextEdge;
-      }
-      else {
+      } else {
         prevEdge->next = nextEdge;
       }
       free(currentEdge);
 
       currentEdge = nextEdge;
-    }
-    else {
+    } else {
       prevEdge = currentEdge;
       currentEdge = currentEdge->next;
     }

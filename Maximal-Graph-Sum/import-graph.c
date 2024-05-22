@@ -1,14 +1,15 @@
 /**
  *
  *  @file      import-graph.c
- *  @brief
- *  @details   ~
+ *  @brief     Function implementations for importing a graph from a file.
  *  @author    Enrique Rodrigues
  *  @date      8.05.2024
  *  @copyright © Enrique Rodrigues, 2024. All right reserved.
  *
  */
 #define _CRT_SECURE_NO_WARNINGS
+
+#include "import-graph.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,24 +19,11 @@
 #include "graph.h"
 #include "vertices.h"
 
-#define MAX_LINE_LENGTH (1 * 1024 * 1024)  // 1MB
-#define MAX_FILE_SIZE_MB 200
-#define MAX_FILE_SIZE (MAX_FILE_SIZE_MB * 1024 * 1024)
-
-#define ERROR_OPENING_FILE -1
-#define MAX_FILE_SIZE_EXCEEDED -2
-#define ERROR_ALLOCATING_MEMORY -3
-#define SUCCESS_IMPORTING 0
-
-#define INVALID_INPUT -1
-
-#include "import-graph.h"
-
- /**
-  *  @brief  Helper function to calculate the size of the file.
-  *  @param  file - A pointer to the file whose size we will check.
-  *  @retval      - The size of the file.
-  */
+/**
+ *  @brief  Helper function to calculate the size of the file.
+ *  @param  file - A pointer to the file whose size we will check.
+ *  @retval      - The size of the file.
+ */
 static size_t GetFileSize(FILE* file) {
   fseek(file, 0, SEEK_END);
   size_t size = ftell(file);
@@ -48,12 +36,17 @@ static size_t GetFileSize(FILE* file) {
  *  @brief  Imports a graph from a text file with a CSV style format.
  *  @param  filename - The name of the text file.
  *  @param  graph    - The graph where we will place the data.
- *  @retval          -
+ *  @retval          - `SUCCESS_IMPORTING` if the graph was imported
+ *                      successfully.
+ *  @retval          - `ERROR_OPENING_FILE` if the file could not be opened.
+ *  @retval          - `MAX_FILE_SIZE_EXCEEDED` if the max file size was
+ *                     exceeded.
+ *  @retval          - `ERROR_ALLOCATING_MEMORY` if there was an error
+ *                     allocating memory.
  */
-int ImportGraphWhole(const char* filename, Graph* graph) {
+int ImportGraph(const char* filename, Graph* graph) {
   FILE* file = fopen(filename, "r");
   if (!file) {
-    perror("Failed to open file");
     return ERROR_OPENING_FILE;
   }
 
@@ -122,57 +115,85 @@ int ImportGraphWhole(const char* filename, Graph* graph) {
   return SUCCESS_IMPORTING;
 }
 
-static Graph* createGraphFromFile(FILE* file) {
-  unsigned int numVertices, hashSize;
-  fread(&numVertices, sizeof(unsigned int), 1, file);
+/**
+ *  @brief  Creates the graph definition based on data on the file.
+ *  @param  file - The file which holds the data.
+ *  @retval      - A pointer to Graph or NULL in the event of error.
+ */
+static Graph* CreateGraphFromFile(FILE* file) {
+  unsigned int hashSize;
   fread(&hashSize, sizeof(unsigned int), 1, file);
 
   Graph* graph = malloc(sizeof(Graph));
+  if (graph == NULL) {
+    return NULL;
+  }
+
   graph->vertices = calloc(hashSize, sizeof(Vertex*));
-  graph->numVertices = numVertices;
+  if (graph->vertices == NULL) {
+    free(graph);
+    return NULL;
+  }
+  graph->numVertices = 0;
   graph->hashSize = hashSize;
 
   return graph;
 }
 
-static void readVerticesFromFile(Graph* graph, FILE* file) {
-  unsigned int i = 0;
-  while (fread(&i, sizeof(unsigned int), 1, file) == 1 && i != 0xFFFFFFFE) {
-    Vertex* vertex = malloc(sizeof(Vertex));
-    vertex->id = i;
-    vertex->edges = NULL;
-    vertex->next = NULL;
-    graph->vertices[i] = vertex;
+/**
+ *  @brief  Reads vertices and edges from a binary file and populates the graph.
+ *  @param  graph - The graph to be populated.
+ *  @param  file  - A pointer to the binary file.
+ *  @retval       - `EXIT_SUCCESS` on success, `EXIT_FAILURE` on failure.
+ */
+static int ReadVerticesAndEdgesFromFile(Graph* graph, FILE* file) {
+  for (unsigned int i = 0; i < graph->hashSize; ++i) {
+    unsigned int vertexId;
+
+    while (fread(&vertexId, sizeof(unsigned int), 1, file) == 1) {
+      if (vertexId == END_MARKER) {
+        break;
+      }
+
+      CreateAddVertex(graph, vertexId);
+      Vertex* vertex = FindVertex(graph, vertexId);
+
+      unsigned int dest;
+      unsigned int weight;
+      while (fread(&dest, sizeof(unsigned int), 1, file) == 1 &&
+             dest != END_MARKER &&
+             fread(&weight, sizeof(unsigned int), 1, file) == 1) {
+        CreateAddEdge(vertex, dest, weight);
+      }
+    }
   }
+
+  return EXIT_SUCCESS;
 }
 
-static void readEdgesFromFile(Vertex* vertex, FILE* file) {
-  unsigned int edgeDest, edgeWeight;
-  while (fread(&edgeDest, sizeof(unsigned int), 1, file) == 1 &&
-    edgeDest != 0xFFFFFFFF) {
-    fread(&edgeWeight, sizeof(unsigned int), 1, file);
-    Edge* edge = malloc(sizeof(Edge));
-    edge->dest = edgeDest;
-    edge->weight = edgeWeight;
-    edge->next = vertex->edges;
-    vertex->edges = edge;
-  }
-}
-
+/**
+ *  @brief  Loads a graph from a binary file.
+ *  @param  filename - The name of the binary file.
+ *  @retval          - A pointer to Graph with the data inside of it or NULL in
+ *                     the event of an error.
+ */
 Graph* LoadGraph(const char* filename) {
   FILE* file = fopen(filename, "rb");
   if (!file) {
-    perror("Failed to open file");
     return NULL;
   }
 
-  Graph* graph = createGraphFromFile(file);
-  if (!graph) {
+  Graph* graph = CreateGraphFromFile(file);
+  if (graph == NULL) {
     fclose(file);
     return NULL;
   }
 
-  readVerticesFromFile(graph, file);
+  if (ReadVerticesAndEdgesFromFile(graph, file) != EXIT_SUCCESS) {
+    fclose(file);
+    return NULL;
+  }
+
   fclose(file);
 
   return graph;

@@ -1,13 +1,11 @@
 /**
-
-    @file      vertices.h
-    @brief     Function definitions for vertex creation, deletion and
+ *  @file      vertices.h
+ *  @brief     Function definitions for vertex creation, deletion and
                management.
-    @author    Enrique George Rodrigues
-    @date      16.05.2024
-    @copyright © Enrique George Rodrigues, 2024. All right reserved.
-
-**/
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ */
 #ifndef VERTICES_H
 #define VERTICES_H
 

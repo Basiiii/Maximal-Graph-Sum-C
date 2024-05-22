@@ -1,13 +1,12 @@
 /**
-
-    @file      graph.h
-    @brief
-    @details   ~
-    @author    Enrique George Rodrigues
-    @date      29.04.2024
-    @copyright © Enrique George Rodrigues, 2024. All right reserved.
-
-**/
+ *  @file      graph.h
+ *  @brief     Main header file of a graph representation.
+ *  @details   Includes standard graph functions such as create, display and
+ *             free.
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ */
 #ifndef GRAPH_H
 #define GRAPH_H
 

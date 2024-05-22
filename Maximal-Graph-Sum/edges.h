@@ -1,12 +1,10 @@
 /**
-
-    @file      edges.h
-    @brief     Function definitions for edge creation, deletion and management.
-    @author    Enrique George Rodrigues
-    @date      16.05.2024
-    @copyright © Enrique George Rodrigues, 2024. All right reserved.
-
-**/
+ *  @file      edges.h
+ *  @brief     Function definitions for edge creation, deletion and management.
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ */
 #ifndef EDGES_H
 #define EDGES_H
 

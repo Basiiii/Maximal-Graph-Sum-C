@@ -144,23 +144,29 @@ int main() {
 
 #endif
 
-  /*Graph* graph = CreateGraph(3000);
+  Graph* graph = CreateGraph(200);
 
-  ImportGraphWhole("C:\\Users\\user\\Desktop\\test.txt", graph);
+  ImportGraph("C:\\Users\\Basi\\Desktop\\test.txt", graph);
 
   DisplayGraph(graph);
 
-  SaveGraph(graph, "test");
+  unsigned int numPaths = 0;
+  PathNode* path = FindAllPaths(graph, 5, 7, &numPaths);
+  PrintPaths(path);
 
-  FreeGraph(graph);*/
+  FreeGraph(graph);
 
-  printf("\n\n\n\n");
+  // SaveGraph(graph, "test");
 
-  Graph* graph2 = LoadGraph("test");
+  // FreeGraph(graph);
 
-  DisplayGraph(graph2);
+  // printf("\n\n\n\n");
 
-  FreeGraph(graph2);
+  // Graph* graph2 = LoadGraph("test");
+
+  // DisplayGraph(graph2);
+
+  // FreeGraph(graph2);
 
   // Graph* graph2 = CreateGraph(500);
   // LoadGraph("test");

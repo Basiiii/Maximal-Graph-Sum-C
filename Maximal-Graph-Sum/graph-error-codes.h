@@ -3,7 +3,7 @@
  *  @brief     Return code definitions which may appear from functions to the
  *             graph.
  *  @author    Enrique Rodrigues
- *  @date      21.05.2024
+ *  @date      22.05.2024
  *  @copyright © Enrique Rodrigues, 2024. All right reserved.
  */
 #ifndef GRAPH_ERROR_CODES_H

@@ -1,13 +1,12 @@
 /**
-
-    @file      graph.c
-    @brief
-    @details   ~
-    @author    Enrique George Rodrigues
-    @date      29.04.2024
-    @copyright © Enrique George Rodrigues, 2024. All right reserved.
-
-**/
+ *
+ *  @file      graph.c
+ *  @brief     Function implementations for standard graph functions.
+ *  @author    Enrique Rodrigues
+ *  @date      22.05.2024
+ *  @copyright © Enrique Rodrigues, 2024. All right reserved.
+ *
+ */
 #include "graph.h"
 
 #include <stdbool.h>
@@ -59,8 +58,7 @@ void DisplayGraph(const Graph* graph) {
 
       if (vertex->edges == NULL) {
         printf("No edges\n");
-      }
-      else {
+      } else {
         PrintEdges(vertex->edges);
       }
 
