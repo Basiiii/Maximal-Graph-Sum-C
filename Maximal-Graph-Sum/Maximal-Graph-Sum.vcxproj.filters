@@ -19,23 +19,17 @@
     <Filter Include="Header Files\Graph">
       <UniqueIdentifier>{eb57e0db-7314-434a-b462-d9b845ab2e6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Search">
-      <UniqueIdentifier>{1406f94a-19e4-4935-bf4b-2564d1dbd059}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Search">
-      <UniqueIdentifier>{ca1afd69-8699-4ccb-8ab5-f5ef7abee4c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Calculate">
-      <UniqueIdentifier>{609010e3-216b-47ce-bab4-2249e57e7e55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Calculate">
-      <UniqueIdentifier>{cf9aed4c-8327-4e5c-8f68-2622e1a327db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\I/O">
       <UniqueIdentifier>{b3e9debd-f055-4792-a35a-19e7fa4ce203}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\I/O">
       <UniqueIdentifier>{b52731c2-2060-4481-827e-e538ee5370e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algorithms">
+      <UniqueIdentifier>{ca1afd69-8699-4ccb-8ab5-f5ef7abee4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms">
+      <UniqueIdentifier>{1406f94a-19e4-4935-bf4b-2564d1dbd059}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +46,7 @@
       <Filter>Header Files\I/O</Filter>
     </ClInclude>
     <ClInclude Include="search.h">
-      <Filter>Header Files\Search</Filter>
+      <Filter>Header Files\Algorithms</Filter>
     </ClInclude>
     <ClInclude Include="graph-error-codes.h">
       <Filter>Header Files\Graph</Filter>
@@ -60,11 +54,17 @@
     <ClInclude Include="graph-structure.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="dijkstra.h">
-      <Filter>Header Files\Calculate</Filter>
-    </ClInclude>
     <ClInclude Include="export-graph.h">
       <Filter>Header Files\I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="dijkstra-min.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="dijkstra-max.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="dijkstra-structure.h">
+      <Filter>Header Files\Algorithms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,13 +81,16 @@
       <Filter>Source Files\I/O</Filter>
     </ClCompile>
     <ClCompile Include="search.c">
-      <Filter>Source Files\Search</Filter>
-    </ClCompile>
-    <ClCompile Include="dijsktra.c">
-      <Filter>Source Files\Calculate</Filter>
+      <Filter>Source Files\Algorithms</Filter>
     </ClCompile>
     <ClCompile Include="export-graph.c">
       <Filter>Source Files\I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="dijkstra-min.c">
+      <Filter>Source Files\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="dijkstra-max.c">
+      <Filter>Source Files\Algorithms</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

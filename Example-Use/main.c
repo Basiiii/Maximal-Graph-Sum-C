@@ -14,7 +14,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "dijkstra.h"
+#include "dijkstra-max.h"
+#include "dijkstra-min.h"
 #include "edges.h"
 #include "export-graph.h"
 #include "graph.h"
@@ -50,10 +51,12 @@
 #define ONE_MILLION_TEST_NUM_VERTICES 1000000
 #define ONE_MILLION_TEST_NUM_EDGES 1000000
 
-/* ============== */
-/* Generic errors */
-/* ============== */
+/* ========================== */
+/*            Misc            */
+/* ========================== */
 #define UNKNOWN_ERROR -100
+#define DIJKSTRA_SOURCE_VERTEX 5
+#define DIJKSTRA_DESTINATION_VERTEX 12
 
 /* =================================== */
 /* Define the test you wish to execute */
@@ -65,6 +68,8 @@
 #define SAVE_TEST
 #define LOAD_TEST
 #define FIND_ALL_PATHS_TEST
+#define DIJKSTRA_SHORTEST_PATH
+#define DIJKSTRA_LONGEST_PATH
 
 /* =================== */
 /* Include the library */
@@ -327,6 +332,68 @@ int main() {
   PrintPaths(paths);
 
   FreeGraph(graphFAP);
+
+#endif
+
+#ifdef DIJKSTRA_SHORTEST_PATH
+
+  printf("\n\nExecuting Dijkstra shortest path test from 5 to 12...\n");
+
+  Graph* graphDijkstra = CreateGraph(FIND_ALL_PATHS_FILE_HASH_SIZE);
+  int importDijkstraRes =
+    ImportGraph(DEFAULT_FIND_ALL_PATHS_FILE_NAME, graphDijkstra);
+  if (importDijkstraRes != EXIT_SUCCESS) {
+    printf("Error importing graph.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  unsigned int srcDijkstra = DIJKSTRA_SOURCE_VERTEX;
+  unsigned int destDijkstra = DIJKSTRA_DESTINATION_VERTEX;
+
+  unsigned int minSumDijkstra;      // Minimum sum of weights
+  unsigned int* pathDijkstra;       // Array to store the path
+  unsigned int pathLengthDijkstra;  // Length of the path
+
+  // Run Dijkstra's algorithm
+  DijkstraMinPath(graphDijkstra, srcDijkstra, destDijkstra, &minSumDijkstra,
+    &pathDijkstra, &pathLengthDijkstra);
+
+  // Print the shortest path and its total weight
+  PrintShortestPath(pathDijkstra, pathLengthDijkstra, minSumDijkstra);
+
+  // Free allocated memory
+  free(pathDijkstra);
+  FreeGraph(graphDijkstra);
+
+#endif
+
+#ifdef DIJKSTRA_LONGEST_PATH
+
+  printf("\n\nExecuting Dijkstra longest path test from 5 to 12...\n");
+
+  Graph* graphDijkstra2 = CreateGraph(FIND_ALL_PATHS_FILE_HASH_SIZE);
+  int importDijkstraRes2 =
+    ImportGraph(DEFAULT_FIND_ALL_PATHS_FILE_NAME, graphDijkstra2);
+  if (importDijkstraRes2 != EXIT_SUCCESS) {
+    printf("Error importing graph.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  unsigned int maxWeight;
+  unsigned int* path;
+  unsigned int pathLength;
+  unsigned int src = DIJKSTRA_SOURCE_VERTEX;
+  unsigned int dest = DIJKSTRA_DESTINATION_VERTEX;
+
+  // Calculate the longest path
+  DijkstraMaxPath(graphDijkstra2, src, dest, &maxWeight, &path, &pathLength);
+
+  // Print the longest path
+  PrintLongestPath(path, pathLength, maxWeight);
+
+  // Clean up allocated memory
+  free(path);
+  FreeGraph(graphDijkstra2);
 
 #endif
 
