@@ -12,5 +12,5 @@ def generate_random_graph(filename, num_vertices, max_edges_per_vertex, max_weig
             line = f"{vertex};" + ";".join(edges) + "\n"
             file.write(line)
 
-# Usage example:
+# Usage:
 generate_random_graph("test.txt", 10, 5, 10)
