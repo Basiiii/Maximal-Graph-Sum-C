@@ -106,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -113,7 +114,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\</Command>
+      <Command>if exist $(ProjectDir)..\Example-Use\Maximal-Graph-Sum.lib del $(ProjectDir)..\Example-Use\Maximal-Graph-Sum.lib
+xcopy /Y $(TargetDir)Maximal-Graph-Sum.lib $(ProjectDir)..\Example-Use\
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -124,6 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -134,10 +138,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dijkstra-max.h" />
+    <ClInclude Include="dijkstra-min.h" />
+    <ClInclude Include="dijkstra-structure.h" />
+    <ClInclude Include="edges.h" />
+    <ClInclude Include="export-graph.h" />
+    <ClInclude Include="graph-error-codes.h" />
+    <ClInclude Include="graph-structure.h" />
     <ClInclude Include="graph.h" />
+    <ClInclude Include="import-graph.h" />
+    <ClInclude Include="search.h" />
+    <ClInclude Include="vertices.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dijkstra-max.c" />
+    <ClCompile Include="dijkstra-min.c" />
+    <ClCompile Include="edges.c" />
+    <ClCompile Include="export-graph.c" />
     <ClCompile Include="graph.c" />
+    <ClCompile Include="import-graph.c" />
+    <ClCompile Include="search.c" />
+    <ClCompile Include="vertices.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
