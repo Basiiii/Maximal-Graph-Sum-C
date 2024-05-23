@@ -14,6 +14,8 @@ This project implements a solution to a computationally challenging problem invo
 
 This repository contains the implementation of a graph structure and algorithms in C, developed as part of my Advanced Data Structures class at Instituto Politécnico do Cávado e do Ave. The focus is on implementing and manipulating graphs using advanced concepts in graph theory and programming in C.
 
+The `generate-random-graph.py` file can be used to generate any sized graph in a CSV format to test the program.
+
 ## Features
 
 - Graph structure using hash tables and linked lists for efficient memory usage and performance.
